@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    darwin = {
+    nix-darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -15,29 +15,25 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, nix-darwin, home-manager, ... }@inputs:
     { 
       nixosConfigurations = {
-        system = "x86_64-linux";
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
-
         default = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs;};
+          system = "x86_64-linux";
           modules = [ 
             ./hosts/default/configuration.nix
-            inputs.home-manager.nixosModules.default
+            home-manager.nixosModules.default
           ];
         };
       };
-      darwinConfigurations = {
-        system = "aarch64-darwin";
-        pkgs = nixpkgs.legacyPackages."aarch64-darwin";
 
-        macbook  = nixpkgs.lib.nixosSystem {
-          specialArgs = {inherit inputs;};
+      darwinConfigurations = {
+        macbook = nix-darwin.lib.darwinSystem {
+          inherit inputs;
+          system = "aarch64-darwin";
           modules = [ 
             ./hosts/macbook/configuration.nix
-            inputs.home-manager.nixosModules.default
+            home-manager.darwinModules.default
           ];
         }; 
       }; 
