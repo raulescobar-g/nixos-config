@@ -31,7 +31,7 @@
       };
       darwinConfigurations = {
         system = "aarch64-darwin";
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = nixpkgs.legacyPackages."aarch64-darwin";
 
         macbook  = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs;};
