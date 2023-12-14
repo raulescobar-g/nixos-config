@@ -16,12 +16,11 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
-    let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
     { 
       nixosConfigurations = {
+        system = "x86_64-linux";
+        pkgs = nixpkgs.legacyPackages.${system};
+
         default = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs;};
           modules = [ 
@@ -31,6 +30,9 @@
         };
       };
       darwinConfigurations = {
+        system = "aarch64-darwin";
+        pkgs = nixpkgs.legacyPackages.${system};
+
         macbook  = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs;};
           modules = [ 
