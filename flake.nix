@@ -19,7 +19,7 @@
     { 
       nixosConfigurations = {
         system = "x86_64-linux";
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
 
         default = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs;};
