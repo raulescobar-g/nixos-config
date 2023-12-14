@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    darwin = {
+      url = darwin.url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,8 +20,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in
-    {
-    
+    { 
       nixosConfigurations = {
         default = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs;};
@@ -25,6 +29,8 @@
             inputs.home-manager.nixosModules.default
           ];
         };
+      };
+      darwinConfigurations = {
         macbook  = nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs;};
           modules = [ 
