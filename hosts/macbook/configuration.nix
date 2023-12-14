@@ -1,7 +1,7 @@
 { config, pkgs, inputs, ... }:
 
 {
-  imports = [ <home-manager/nix-darwin> ];
+  # imports = [ <home-manager/nix-darwin> ];
 
   users.users.raulescobar = {
     name = "raulescobar";
@@ -22,7 +22,6 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
   nix.package = pkgs.nix;
-  settings.experimental-features = [ "nix-command" "flakes" ];
   programs.zsh.enable = true;  # default shell on catalina
 
   # Used for backwards compatibility, please read the changelog before changing.
