@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [ <home-manager/nix-darwin> ];
@@ -10,9 +10,9 @@
   
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages =
-    [ 
-    ];
+  environment.systemPackages = [ 
+  
+  ];
   environment.pathsToLink = [ "/share/zsh" ];
   nixpkgs.config.allowUnfree = true;
   # Use a custom configuration.nix location.

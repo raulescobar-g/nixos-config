@@ -25,7 +25,13 @@
             inputs.home-manager.nixosModules.default
           ];
         };
-      };
-
+        macbook  = nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs;};
+          modules = [ 
+            ./hosts/macbook/configuration.nix
+            inputs.home-manager.nixosModules.default
+          ];
+        }; 
+      }; 
     };
 }
