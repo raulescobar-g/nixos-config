@@ -17,22 +17,29 @@
   outputs = { self, nixpkgs, nix-darwin, home-manager, ... }@inputs:
     { 
       nixosConfigurations = {
-        default = nixpkgs.lib.nixosSystem {
+        nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = inputs;
           modules = [ 
-            ./hosts/default/configuration.nix
-            home-manager.nixosModules.default
+            ./hosts/nixos/configuration.nix
+            home-manager.nixosModules.home-manager {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users."raulescobar_g" = import ./hosts/nixos/home.nix;
+              };
+            }
           ];
         };
       };
 
       darwinConfigurations = {
         macbook = nix-darwin.lib.darwinSystem {
-          inherit inputs;
+          specialArgs = inputs;
           system = "aarch64-darwin";
           modules = [ 
             ./hosts/macbook/configuration.nix
-            home-manager.darwinModules.default
+            home-manager.darwinModules.home-manager
           ];
         }; 
       }; 
