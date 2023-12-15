@@ -15,7 +15,6 @@
   imports =
     [ 
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
     ];
 
   hardware.opengl = {
@@ -161,12 +160,6 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    users = {
-	"raulescobar_g" = import ./home.nix;
-    };
-  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
