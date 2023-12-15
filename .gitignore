@@ -67,3 +67,6 @@ wootility/
 xsettingsd/
 yabai/
 zellij/
+.zshrc
+.zshenv
+configstore/
