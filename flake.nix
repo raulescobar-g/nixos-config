@@ -22,13 +22,13 @@
           specialArgs = inputs;
           modules = [ 
             ./hosts/nixos/configuration.nix
-            home-manager.nixosModules.home-manager {
+            (home-manager.nixosModules.home-manager {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users."raulescobar_g" = import ./hosts/nixos/home.nix;
               };
-            }
+            })
           ];
         };
       };
@@ -39,7 +39,13 @@
           system = "aarch64-darwin";
           modules = [ 
             ./hosts/macbook/configuration.nix
-            home-manager.darwinModules.home-manager
+            (home-manager.darwinModules.home-manager {
+	      home-manager = {
+		useGlobalPkcs = true;
+  	        useUserPackages = true;
+ 	        users."raulescobar" = import ./modules/macbook/home-manager.nix;
+ 	      };
+	    })
           ];
         }; 
       }; 
