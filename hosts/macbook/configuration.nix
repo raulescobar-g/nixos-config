@@ -9,12 +9,12 @@
     experimental-features = nix-command flakes
   '';
 
-  programs.zsh {
+  programs.zsh = {
     enable = true;
   };
 
   environment = {
-    shells = [ zsh ];
+    shells = with pkgs; [ zsh ];
     loginShell = pkgs.zsh;
   };
   
