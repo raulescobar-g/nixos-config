@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  berkeley-mono = pkgs.callPackage ../fonts/berkeley-mono.nix {};
+  berkeley-mono = pkgs.callPackage ../font/berkeley-mono.nix {};
 in 
 {
   programs.home-manager.enable = true;
