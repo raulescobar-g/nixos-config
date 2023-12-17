@@ -4,7 +4,7 @@
   programs.home-manager.enable = true;
   home.username = "raulescobar_g";
   home.homeDirectory = "/home/raulescobar_g";
-
+  imports = [ ../font/berkeley-mono ];
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -29,6 +29,7 @@
     ripgrep
     eza
     fzf
+    berkeley-mono
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
