@@ -33,6 +33,10 @@
         };
       };
 
+      packages.x86_64-linux.berkeley-mono = import ./modules/font/berkeley-mono.nix {
+        inherit (nixpkgs) lib stdenv fetchFromGitHub;
+      };
+
       darwinConfigurations = {
         macbook = nix-darwin.lib.darwinSystem {
           specialArgs = inputs;
