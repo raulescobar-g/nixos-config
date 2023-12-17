@@ -134,7 +134,6 @@
     discord
     whatsapp-for-linux
     lm_sensors
-    neovim
     git    
     (prismlauncher.override { jdks = [ zulu8 zulu17 ]; })
     spotify

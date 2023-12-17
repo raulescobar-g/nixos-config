@@ -16,10 +16,19 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
+  home.packages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
-    pkgs.hello
+    kitty
+    zellij
+    zsh
+    starship
+    pfetch
+    zoxide
+    bat
+    ripgrep
+    eza
+    fzf
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -73,7 +82,48 @@
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
+    };
 
+    kitty = {
+      enable = true;
+      shellIntegration.enableZshIntegration = true;
+      environment = { "KITTY_ENABLE_WAYLAND"="1"; };
+      font = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Sans";
+        size = 12;
+      };
+      keybindings = {
+        "ctrl+c" = "copy_or_interrupt";
+      };
+      settings = {
+        scrollback_lines = 10000;
+        enable_audio_bell = false;
+        update_check_interval = 0;
+        foreground = "#ffffff";
+        background = "#161616";
+        background_opacity = "0.5";
+        background_blur = 0;
+        selection_foreground = "#161616";
+        selection_background = "#ee5396";
+        color0 = "#262626";
+        color8 = "#393939";
+        color1 = "#ee5396";
+        color9 = "#ee5396";
+        color2 = "#42be65";
+        color10 = "#42be65";
+        color3 = "#ffe97b";
+        color11 = "#ffe97b";
+        color4 = "#33b1ff";
+        color12 = "#33b1ff";
+        color5 = "#ff7eb6";
+        color13 = "#ff7eb6";
+        color6 = "#3ddbd9";
+        color14 = "#3ddbd9";
+        color7 = "#dde1e6";
+        color15 = "#ffffff";
+      };
+      
     };
   };
 }
