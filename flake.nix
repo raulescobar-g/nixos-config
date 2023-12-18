@@ -14,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager }:
+  outputs = { self, nixpkgs, nix-darwin, home-manager, ... }@inputs :
     { 
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
@@ -34,16 +34,17 @@
 
       darwinConfigurations = {
         macbook = nix-darwin.lib.darwinSystem {
+          specialArgs = inputs;
           system = "aarch64-darwin";
           modules = [ 
             ./hosts/macbook/configuration.nix
-            (home-manager.darwinModules.home-manager {
+            home-manager.darwinModules.home-manager {
 	      home-manager = {
-		useGlobalPkcs = true;
+		useGlobalPkgs = true;
   	        useUserPackages = true;
  	        users."raulescobar" = import ./modules/macbook/home-manager.nix;
  	      };
-	    })
+	    }
           ];
         }; 
       }; 

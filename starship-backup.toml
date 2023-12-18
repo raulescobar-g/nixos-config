@@ -1,0 +1,64 @@
+
+[[battery.display]]
+threshold = 10
+style = "bold red"
+
+[character]
+success_symbol = "[λ](bold #BE95FF)" #% $ λ ∆ ∏ ∀ ∃ ∂ ∈ 𝝿 𝞇 𝞍 ∇ 𝛀 
+error_symbol = "[λ](bold blue)"
+vimcmd_symbol = "[∇](bold green)"
+
+[cmd_duration]
+min_time = 10_000  
+format = "took [$duration]($style)"
+style = "bold bright-black"
+
+[directory]
+style = "bold #be95ff"
+truncation_length = 5
+format = "[$path]($style)[$lock_symbol]($lock_style) "
+disabled=true
+
+[git_branch]
+format = "∃ [$branch]($style)"
+style = "bold #be95ff"
+
+[git_commit]
+commit_hash_length = 8
+style = "bold white"
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+
+[git_status]
+conflicted = "≠"
+diverged = "Y"
+modified = "*"
+untracked = "∉"
+up_to_date = "∈"
+style = "bold bright-magenta"
+format = " [$all_status]($style) "
+
+[hostname]
+disabled = true
+
+[username]
+show_always = false
+
+[aws]
+disabled=true
+
+[rust]
+disabled=true
+
+[docker_context]
+disabled=true
+
+[package]
+disabled=true
+
+[nodejs]
+disabled=true
+
+[lua]
+disabled=true

@@ -1,33 +1,13 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, lib, ...}:
+let 
+  berkeley-mono = pkgs.callPackage ../font/berkeley-mono.nix {};
+in
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "raulescobar";
   home.homeDirectory = "/Users/raulescobar";
-
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
+  home.packages = with pkgs; [
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
     # # environment:
@@ -35,6 +15,117 @@
     #   echo "Hello, ${config.home.username}!"
     # '')
   ];
+
+  home.shellAliases = {
+    renix = "darwin-rebuild switch --flake .#macbook";
+    ls = "eza";
+    cat = "bat";
+    cd = "z";
+    ll = "eza -l -g --icons --git";
+    llt = "eza -1 --icons --tree --git-ignore";
+    sf = "fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' | xargs nvim";
+    code = "nvim";
+    grep = "rg";
+  };
+
+  programs = {
+    zsh = {
+      enable = true;
+      enableAutosuggestions = true;
+      enableCompletion = true;
+      initExtra = ''
+        source <(/etc/profiles/per-user/raulescobar/bin/starship init zsh --print-full-init)
+      '';
+    };
+    neovim = {
+      enable = true;
+    };
+    eza = {
+      enable = true;
+    };
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        character = {
+          success_symbol = "[λ](bold #BE95FF)";  
+          error_symbol = "[λ](bold blue)";
+          vimcmd_symbol = "[∇](bold green)";
+        };
+        cmd_duration = {
+          min_time = 10000;
+          format = "took [$duration]($style)";
+          style = "bold bright-black";
+        };
+        directory = {
+          style = "bold #be95ff";
+          truncation_length = 5;
+          format = "[$path]($style)[$lock_symbol]($lock_style) ";
+          disabled = true; 
+        };
+        git_branch = {
+          format = "∃ [$branch]($style)";
+          style = "bold #be95ff";
+        };
+        git_commit ={
+          commit_hash_length = 8;
+          style = "bold white";
+        };
+        git_state = {
+          format = "[\($state( $progress_current of $progress_total)\)]($style) ";
+        };
+        git_status = {
+          conflicted = "≠";
+          diverged = "Y";
+          modified = "*";
+          untracked = "∉";
+          up_to_date = "∈";
+          style = "bold bright-magenta";
+          format = " [$all_status]($style) ";
+        };
+        hostname = {
+          disabled = true;
+        };
+        username = {
+          show_always = false;
+        };
+        aws = {
+          disabled = true;
+        };
+        rust = {
+          disabled = true;
+        };
+        docker_context = {
+          disabled = true;
+        };
+        package = {
+          disabled = true;
+        };
+        nodejs = {
+          disabled = true;
+        };
+        lua = {
+          disabled = true;
+        };
+      };
+    };
+    bat = {
+      enable = true;
+    };
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+    zellij = {
+      enable = true;
+    };
+    fzf = {
+      enable = true;
+    };
+    ripgrep = {
+      enable = true;
+    };
+  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -51,21 +142,8 @@
     # '';
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/raulescobar_g/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     EDITOR = "nvim";
   };
-
-  # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
