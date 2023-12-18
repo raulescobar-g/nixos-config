@@ -25,7 +25,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users."raulescobar_g" = import ./hosts/nixos/home.nix;
+                users."raulescobar_g" = import ./modules/nixos/home-manager.nix;
               };
             })
           ];

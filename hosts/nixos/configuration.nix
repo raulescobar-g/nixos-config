@@ -35,7 +35,6 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
@@ -135,7 +134,6 @@
     discord
     whatsapp-for-linux
     lm_sensors
-    neovim
     git    
     (prismlauncher.override { jdks = [ zulu8 zulu17 ]; })
     spotify
@@ -156,6 +154,7 @@
     libnotify
     swww
     rofi-wayland
+    eww-wayland
   ];
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
