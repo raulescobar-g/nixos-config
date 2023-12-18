@@ -9,9 +9,6 @@ in
 
   home.packages = with pkgs; [
     pfetch
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
@@ -155,6 +152,20 @@ in
     };
     bat = {
       enable = true;
+      config = {
+        theme = "dracula";
+      };
+      themes = {
+        dracula = {
+          src = pkgs.fetchFromGitHub {
+            owner = "dracula";
+            repo = "sublime"; # Bat uses sublime syntax for its themes
+            rev = "26c57ec282abcaa76e57e055f38432bd827ac34e";
+            sha256 = "019hfl4zbn4vm4154hh3bwk6hm7bdxbr1hdww83nabxwjn99ndhv";
+          };
+          file = "Dracula.tmTheme";
+        };
+      };
     };
     zoxide = {
       enable = true;
@@ -162,6 +173,12 @@ in
     };
     zellij = {
       enable = true;
+      enableZshIntegration = true;
+      settings = {
+        theme = "custom";
+        themes.custom.fg = "#ffffff";
+        themes.custom.bg = "#161616";
+      };
     };
     fzf = {
       enable = true;
