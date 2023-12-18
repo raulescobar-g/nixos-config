@@ -8,6 +8,7 @@ in
   home.stateVersion = "23.11"; # Please read the comment before changing.
 
   home.packages = with pkgs; [
+    pfetch
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
     # # environment:
@@ -26,6 +27,8 @@ in
     sf = "fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' | xargs nvim";
     code = "nvim";
     grep = "rg";
+    pfetch = "PF_ASCII=\"Linux\" pfetch";
+    clear = "clear && pfetch";
   };
 
   programs = {
@@ -35,10 +38,51 @@ in
       enableCompletion = true;
       initExtra = ''
         source <(/etc/profiles/per-user/raulescobar/bin/starship init zsh --print-full-init)
+        osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"~/Wallpapers/1.png\" as POSIX file" 
+        PF_ASCII="Linux" pfetch
       '';
     };
     neovim = {
       enable = true;
+    };
+    kitty = {
+      enable = true;
+      shellIntegration.enableZshIntegration = true;
+      environment = { "KITTY_ENABLE_WAYLAND"="1"; };
+      font = {
+        name = "Berkeley Mono";
+        size = 36;
+      };
+      keybindings = {
+        "ctrl+c" = "copy_or_interrupt";
+      };
+      settings = {
+        scrollback_lines = 10000;
+        enable_audio_bell = false;
+        update_check_interval = 0;
+        foreground = "#ffffff";
+        background = "#161616";
+        background_opacity = "0.5";
+        background_blur = 0;
+        selection_foreground = "#161616";
+        selection_background = "#ee5396";
+        color0 = "#262626";
+        color8 = "#393939";
+        color1 = "#ee5396";
+        color9 = "#ee5396";
+        color2 = "#42be65";
+        color10 = "#42be65";
+        color3 = "#ffe97b";
+        color11 = "#ffe97b";
+        color4 = "#33b1ff";
+        color12 = "#33b1ff";
+        color5 = "#ff7eb6";
+        color13 = "#ff7eb6";
+        color6 = "#3ddbd9";
+        color14 = "#3ddbd9";
+        color7 = "#dde1e6";
+        color15 = "#ffffff";
+      };
     };
     eza = {
       enable = true;
