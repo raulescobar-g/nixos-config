@@ -33,9 +33,9 @@
       dock = {
         show-recents = false;
         autohide = true;
-        autohide-delay = 0.24;
+        autohide-delay = 0.0;
         orientation = "bottom";
-        tilesize = 32;
+        tilesize = 48;
         static-only = true;
       };
     };
@@ -66,6 +66,18 @@
         window_gap = 10;
         layout = "bsp";
       };
+    };
+    skhd = {
+      enable = true;
+      skhdConfig = ''
+        ctrl - j: yabai -m window --focus south
+        ctrl - k: yabai -m window --focus north
+        ctrl - h: yabai -m window --focus west
+        ctrl - l: yabai -m window --focus east
+        ctrl + alt - q: yabai --stop-service
+        ctrl + alt - s: yabai --start-service
+        cmd - j: yabai -m space --focus west
+      '';
     };
   };
 

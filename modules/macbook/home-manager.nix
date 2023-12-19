@@ -34,7 +34,7 @@ in
       enableAutosuggestions = true;
       enableCompletion = true;
       initExtra = ''
-        source <(/etc/profiles/per-user/raulescobar/bin/starship init zsh --print-full-init)
+        eval "$(starship init zsh)"
         osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"~/Wallpapers/1.png\" as POSIX file" 
         PF_ASCII="Linux" pfetch
       '';
