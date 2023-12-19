@@ -45,6 +45,9 @@ in
     kitty = {
       enable = true;
       shellIntegration.enableZshIntegration = true;
+      darwinLaunchOptions = [
+        "-o allow_remote_control=yes" 
+      ];
       environment = { "KITTY_ENABLE_WAYLAND"="1"; };
       font = {
         name = "Berkeley Mono";
@@ -54,6 +57,9 @@ in
         "ctrl+c" = "copy_or_interrupt";
       };
       settings = {
+        allow_remote_control = true;
+        macos_traditional_fullscreen = true;
+        dynamic_background_opacity = true;
         scrollback_lines = 10000;
         enable_audio_bell = false;
         update_check_interval = 0;
@@ -174,14 +180,17 @@ in
     zellij = {
       enable = true;
       enableZshIntegration = true;
-      settings = {
-        theme = "custom";
-        themes.custom.fg = "#ffffff";
-        themes.custom.bg = "#161616";
-      };
+      # settings = {
+      #   theme = "custom";
+      #   themes.custom.fg = "#ffffff";
+      #   themes.custom.bg = "#161616";
+      # };
     };
     fzf = {
       enable = true;
+      enableZshIntegration = true;
+      colors = {};
+      # many more options can go here
     };
     ripgrep = {
       enable = true;
