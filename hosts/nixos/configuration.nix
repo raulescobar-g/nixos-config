@@ -137,23 +137,13 @@
     git    
     (prismlauncher.override { jdks = [ zulu8 zulu17 ]; })
     spotify
-    kitty
-    zellij
     zsh
-    starship
-    pfetch
-    zoxide
-    bat
-    ripgrep
-    eza
-    fzf
     google-chrome
     firefox
     waybar
     dunst
     libnotify
     swww
-    rofi-wayland
     eww-wayland
   ];
   xdg.portal.enable = true;

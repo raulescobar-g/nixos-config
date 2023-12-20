@@ -1,14 +1,13 @@
-{ lib }:
+{ lib, stdenv }:
 
 stdenv.mkDerivation {
   pname = "berkeley-mono";
   version = "1.0";
 
-  src = builtin.fetchGit {
-    owner = "raulescobar-g";
-    repo = "Berkley-mono";
+  src = builtins.fetchGit {
+    url = "git@github.com:raulescobar-g/Berkely-mono.git";
+    ref = "main";
     rev = "f5f28cb97d7c2ec87bb7b9d2576dfab100adcbb2";
-    sha256 = lib.fakeHash;    
   };
 
   installPhase = ''

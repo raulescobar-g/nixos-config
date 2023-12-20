@@ -22,63 +22,40 @@ in
 
   home.packages = with pkgs; [
     berkeley-mono
-    zellij
-    zsh
-    starship
     pfetch
-    zoxide
-    bat
-    ripgrep
-    eza
-    fzf
-
-    # config.nixpkgs.config.berkeley-mono
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
+  home.file = { };
 
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/raulescobar_g/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     EDITOR = "nvim";
   };
 
+  home.shellAliases = {
+    renix = "sudo nixos-rebuild switch --flake .#nixos";
+    ls = "eza";
+    cat = "bat";
+    cd = "z";
+    ll = "eza -l -g --icons --git";
+    llt = "eza -1 --icons --tree --git-ignore";
+    sf = "fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}' | xargs nvim";
+    code = "nvim";
+    grep = "rg";
+    pfetch = "PF_ASCII=\"Linux\" pfetch";
+    clear = "clear && pfetch";
+  };
+
   programs = {
-    
+    zsh = {
+      enable = true;
+      enableAutosuggestions = true;
+      enableCompletion = true;
+      defaultKeymap = "vicmd";
+
+      initExtra = ''
+        PF_ASCII="Linux" pfetch
+      '';
+    };
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -86,15 +63,14 @@ in
       vimAlias = true;
       vimdiffAlias = true;
     };
-
     kitty = {
       enable = true;
       shellIntegration.enableZshIntegration = true;
       environment = { "KITTY_ENABLE_WAYLAND"="1"; };
       font = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans";
-        size = 12;
+        package = berkeley-mono;
+        name = "Berkeley Mono";
+        size = 24;
       };
       keybindings = {
         "ctrl+c" = "copy_or_interrupt";
@@ -126,7 +102,120 @@ in
         color7 = "#dde1e6";
         color15 = "#ffffff";
       };
-      
     };
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        character = {
+          success_symbol = "[λ](bold #BE95FF)";  
+          error_symbol = "[λ](bold blue)";
+          vimcmd_symbol = "[∇](bold green)";
+        };
+        cmd_duration = {
+          min_time = 10000;
+          format = "took [$duration]($style)";
+          style = "bold bright-black";
+        };
+        directory = {
+          style = "bold #be95ff";
+          truncation_length = 5;
+          format = "[$path]($style)[$lock_symbol]($lock_style) ";
+          disabled = true; 
+        };
+        git_branch = {
+          format = "∃ [$branch]($style)";
+          style = "bold #be95ff";
+        };
+        git_commit ={
+          commit_hash_length = 8;
+          style = "bold white";
+        };
+        git_state = {
+          format = "[\($state( $progress_current of $progress_total)\)]($style) ";
+        };
+        git_status = {
+          conflicted = "≠"; 
+          diverged = "Y";
+          modified = "*";
+          untracked = "∉";
+          up_to_date = "∈";
+          style = "bold bright-magenta";
+          format = " [$all_status]($style) ";
+        };
+        hostname = {
+          disabled = true;
+        };
+        username = {
+          show_always = false;
+        };
+        aws = {
+          disabled = true;
+        };
+        rust = {
+          disabled = true;
+        };
+        docker_context = {
+          disabled = true;
+        };
+        package = {
+          disabled = true;
+        };
+        nodejs = {
+          disabled = true;
+        };
+        lua = { 
+          disabled = true; 
+        };
+      };
+    }; 
+    zellij = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        theme = "custom";
+        themes = {
+          custom = {
+            fg = "#ffffff";
+            bg = "#161616";
+          };
+        };
+      };
+    };
+    ripgrep = {
+      enable = true;
+    };
+    bat = {
+      enable = true;
+      config = {
+        theme = "dracula";
+      };
+      themes = {
+         dracula = {
+            src = pkgs.fetchFromGitHub {
+              owner = "dracula";
+              repo = "sublime"; # Bat uses sublime syntax for its themes
+              rev = "26c57ec282abcaa76e57e055f38432bd827ac34e";
+              sha256 = "019hfl4zbn4vm4154hh3bwk6hm7bdxbr1hdww83nabxwjn99ndhv";
+            };
+            file = "Dracula.tmTheme";
+         };
+      };
+    };
+    zoxide = {
+      enable = true;
+    };
+    rofi = {
+      enable = true;
+      package = pkgs.rofi-wayland;
+      font = "Berkeley Mono 16";
+      location = "center";
+    };
+    eww = {
+      enable = true;
+
+    };   
+
   };
+
 }
