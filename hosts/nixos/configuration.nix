@@ -1,15 +1,5 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, inputs, ... }:
 {
-  programs.hyprland = {
-	enable = true;
-	enableNvidiaPatches = true;
-	xwayland.enable = true;
-  };
-
   programs.zsh.enable = true;
   
   imports =
@@ -23,7 +13,6 @@
     driSupport32Bit = true;
   };
 
-  services.xserver.videoDrivers =  [ "nvidia" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   hardware.nvidia = {
@@ -73,17 +62,26 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
   environment.sessionVariables = {
   	WLR_NO_HARDWARE_CURSORS = "1";
 	NIXOS_OZONE_WL = "1";
   };
-  services.xserver.displayManager.sddm.enable = true; 
 
   # Configure keymap in X11 
   services.xserver = {
+    enable = true;
+    videoDrivers = [ "nvidia" ];
     layout = "us";
     xkbVariant = "";
+    displayManager = {
+      sddm = {
+        enable = true;
+      };
+      autoLogin = {
+        enable = true;
+	user = "raulescobar_g";
+      };
+    };
   };
   
   # Enable CUPS to print documents.
@@ -115,10 +113,6 @@
     extraGroups = [ "networkmanager" "wheel" ];
     # packages = with pkgs; [ ];
   };
-
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "raulescobar_g";
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
   systemd.services."getty@tty1".enable = false;

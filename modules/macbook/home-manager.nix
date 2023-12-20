@@ -68,10 +68,6 @@ in
 	size = 24;
       };
       environment = { "KITTY_ENABLE_WAYLAND"="1"; };
-      font = {
-        name = "Berkeley Mono";
-        size = 36;
-      };
       keybindings = {
         "ctrl+c" = "copy_or_interrupt";
       };
@@ -84,7 +80,7 @@ in
         update_check_interval = 0;
         foreground = "#ffffff";
         background = "#161616";
-        background_opacity = "0.5";
+        background_opacity = "0.8";
         background_blur = 0;
         selection_foreground = "#161616";
         selection_background = "#ee5396";
@@ -203,7 +199,7 @@ in
     fzf = {
       enable = true;
       enableZshIntegration = true;
-      colors = {};
+      # colors = {};
       # many more options can go here
     };
     ripgrep = {
