@@ -185,6 +185,9 @@ in
     ripgrep = {
       enable = true;
     };
+    eza = {
+      enable = true;
+    };
     bat = {
       enable = true;
       config = {
@@ -211,10 +214,6 @@ in
       font = "Berkeley Mono 16";
       location = "center";
     };
-    eww = {
-      enable = true;
-
-    };   
 
   };
 
