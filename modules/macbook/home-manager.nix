@@ -6,13 +6,20 @@ in
   home.username = "raulescobar";
   home.homeDirectory = "/Users/raulescobar";
   home.stateVersion = "23.11"; # Please read the comment before changing.
+  
+  fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
+    berkeley-mono
     pfetch
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
   ];
+
+  home.file = { };
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
+
 
   home.shellAliases = {
     renix = "darwin-rebuild switch --flake .#macbook";
@@ -29,10 +36,13 @@ in
   };
 
   programs = {
+    home-manager = {
+      enable = true;
+    };
     zsh = {
       enable = true;
       enableAutosuggestions = true;
-      enableCompletion = true;
+      enableCompletion = true; # move wallpaper setting to system wide init
       initExtra = ''
         eval "$(starship init zsh)"
         osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"~/Wallpapers/1.png\" as POSIX file" 
@@ -41,6 +51,10 @@ in
     };
     neovim = {
       enable = true;
+      defaultEditor = true;
+      viAlias = true;   
+      vimAlias = true;
+      vimdiffAlias = true;
     };
     kitty = {
       enable = true;
@@ -48,6 +62,11 @@ in
       darwinLaunchOptions = [
         "-o allow_remote_control=yes" 
       ];
+      font = {
+        package = berkeley-mono;
+	name = "Berkeley Mono";
+	size = 24;
+      };
       environment = { "KITTY_ENABLE_WAYLAND"="1"; };
       font = {
         name = "Berkeley Mono";
@@ -180,11 +199,6 @@ in
     zellij = {
       enable = true;
       enableZshIntegration = true;
-      # settings = {
-      #   theme = "custom";
-      #   themes.custom.fg = "#ffffff";
-      #   themes.custom.bg = "#161616";
-      # };
     };
     fzf = {
       enable = true;
@@ -196,24 +210,4 @@ in
       enable = true;
     };
   };
-
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
-  home.sessionVariables = {
-    EDITOR = "nvim";
-  };
-  programs.home-manager.enable = true;
 }

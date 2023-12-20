@@ -3,21 +3,11 @@ let
   berkeley-mono = pkgs.callPackage ../font/berkeley-mono.nix {};
 in 
 {
-  programs.home-manager.enable = true;
   home.username = "raulescobar_g";
   home.homeDirectory = "/home/raulescobar_g";
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
   home.stateVersion = "23.11"; # Please read the comment before changing.
   
   
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
@@ -46,13 +36,15 @@ in
   };
 
   programs = {
+    home-manager = {
+      enable = true;
+    };
     zsh = {
       enable = true;
       enableAutosuggestions = true;
       enableCompletion = true;
-      defaultKeymap = "vicmd";
-
       initExtra = ''
+      	eval "$(starship init zsh)"
         PF_ASCII="Linux" pfetch
       '';
     };
@@ -72,10 +64,14 @@ in
         name = "Berkeley Mono";
         size = 24;
       };
+      environment = { "KITTY_ENABLE_WAYLAND" = "1"; };
       keybindings = {
         "ctrl+c" = "copy_or_interrupt";
       };
       settings = {
+        allow_remote_control = true;
+	macos_traditional_fullscreen = true;
+	dynamic_background_opacity = true;
         scrollback_lines = 10000;
         enable_audio_bell = false;
         update_check_interval = 0;
@@ -172,21 +168,17 @@ in
     zellij = {
       enable = true;
       enableZshIntegration = true;
-      settings = {
-        theme = "custom";
-        themes = {
-          custom = {
-            fg = "#ffffff";
-            bg = "#161616";
-          };
-        };
-      };
     };
     ripgrep = {
       enable = true;
     };
     eza = {
       enable = true;
+    };
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+      colors = {};
     };
     bat = {
       enable = true;
@@ -207,6 +199,7 @@ in
     };
     zoxide = {
       enable = true;
+      enableZshIntegration = true;
     };
     rofi = {
       enable = true;
