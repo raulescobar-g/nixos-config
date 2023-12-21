@@ -5,8 +5,8 @@ in
 {
   home.username = "raulescobar_g";
   home.homeDirectory = "/home/raulescobar_g";
-  home.stateVersion = "23.11"; # Please read the comment before changing.
-  # hi  
+  home.stateVersion = "23.11";
+  
   wayland = {
     windowManager = {
       hyprland = {
@@ -160,11 +160,12 @@ in
 	  bind = $mainMod, mouse_down, workspace, e+1
 	  bind = $mainMod, mouse_up, workspace, e-1
 	  
-	  # Move/resize windows with mainM:wod + LMB/RMB and dragging
+	  # Move/resize windows with mainM:w
+	  # od + LMB/RMB and dragging
 	  bindm = $mainMod, mouse:272, movewindow
  	  bindm = $mainMod, mouse:273, resizewindow	    
-	'';
-	systemd = {
+	'';	
+        systemd = {
 	  enable = true;
 	};
 	xwayland = {
