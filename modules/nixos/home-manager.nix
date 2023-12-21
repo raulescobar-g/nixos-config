@@ -5,7 +5,7 @@ in
 {
   home.username = "raulescobar_g";
   home.homeDirectory = "/home/raulescobar_g";
-  home.stateVersion = "23.11"; # Please read the comment before changing.
+  home.stateVersion = "23.11";
   
   wayland = {
     windowManager = {
@@ -164,8 +164,8 @@ in
 	  # od + LMB/RMB and dragging
 	  bindm = $mainMod, mouse:272, movewindow
  	  bindm = $mainMod, mouse:273, resizewindow	    
-	'';
-	systemd = {
+	'';	
+        systemd = {
 	  enable = true;
 	};
 	xwayland = {

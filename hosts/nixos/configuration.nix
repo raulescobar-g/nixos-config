@@ -1,12 +1,10 @@
 { config, pkgs, inputs, ... }:
 {
-  programs.zsh.enable = true;
-  
   imports =
     [ 
       ./hardware-configuration.nix
     ];
-
+  
   hardware.opengl = {
     enable = true;
     driSupport = true;
@@ -23,12 +21,24 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
-
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  fonts = {
+    enableDefaultPackages = true;
+    enableGhostscriptFonts = true;
   };
+  programs = {
+    hyprland = {
+      enable = true;
+    };
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    };
+    zsh = { 
+      enable = true;
+    };
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
