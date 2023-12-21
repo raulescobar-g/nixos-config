@@ -56,14 +56,19 @@
       config = {
         mouse_follows_focus = false;
         focus_follows_mouse = true;
+        window_animation_frame_rate = 120;
         window_shadow = true;
         window_opacity = true;
+        active_window_border_color = "0xFF88C0D0";
+        normal_window_border_color = "0x002E3440";
+        insert_feedback_color = "0xFFA3BE8C";
+        window_border = true;
         mouse_modifier = "cmd";
-        top_padding = 10;
-        bottom_padding = 10;
-        right_padding = 10;
-        left_padding = 10;
-        window_gap = 10;
+        top_padding = 12;
+        bottom_padding = 12;
+        right_padding = 12;
+        left_padding = 12;
+        window_gap = 12;
         layout = "bsp";
       };
     };
@@ -79,6 +84,7 @@
         cmd - l: yabai -m space --focus next
         cmd - h: yabai -m space --focus prev 
         cmd - m: yabai -m window --toggle zoom-fullscreen
+        cmd - c: yabai -m window --close
       '';
     };
     sketchybar = {
