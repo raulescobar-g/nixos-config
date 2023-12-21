@@ -12,6 +12,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    berkeley-mono.url = "github:raulescobar_g/berkeley-mono";
   };
 
   outputs = { self, nixpkgs, nix-darwin, home-manager, ... }@inputs :
