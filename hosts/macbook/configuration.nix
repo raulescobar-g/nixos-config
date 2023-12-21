@@ -76,10 +76,20 @@
         ctrl - l: yabai -m window --focus east
         ctrl + alt - q: yabai --stop-service
         ctrl + alt - s: yabai --start-service
-        cmd - j: yabai -m space --focus west
+        cmd - l: yabai -m space --focus next
+        cmd - h: yabai -m space --focus prev 
+        cmd - m: yabai -m window --toggle zoom-fullscreen
+      '';
+    };
+    sketchybar = {
+      enable = true;
+      config = ''
+        color = 0xffffffff
+        position = top
       '';
     };
   };
+  
 
   environment.pathsToLink = [ "/share/zsh" ];
   nixpkgs.config.allowUnfree = true;
