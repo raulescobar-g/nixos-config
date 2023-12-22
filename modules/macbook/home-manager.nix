@@ -1,6 +1,12 @@
 { config, pkgs, lib, ...}:
 let 
   berkeley-mono = pkgs.callPackage ../font/berkeley-mono.nix {};
+  wallpapa = pkgs.writeShellScriptBin "wallpapa" ''
+      #!/usr/bin/env bash 
+      WALLPAPER_DIR="$HOME/Wallpapers"
+      RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
+      osascript -e "tell application \"System Events\" to set picture of every desktop to \"$RANDOM_WALLPAPER\""
+    '';
 in
 {
   home.username = "raulescobar";
@@ -9,9 +15,20 @@ in
   
   fonts.fontconfig.enable = true;
 
+  launchd.agents = {
+    "com.user.setwallpaper" = {
+      enable = true;
+      config = {
+        Label = "Wallpaper";
+        Program = "${wallpapa}/bin/wallpapa";
+      };
+    };
+  };
+
   home.packages = with pkgs; [
     berkeley-mono
     pfetch
+    wallpapa
   ];
 
   home.file = { };
