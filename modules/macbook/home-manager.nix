@@ -14,27 +14,68 @@ in
   home.stateVersion = "23.11"; # Please read the comment before changing.
   
   fonts.fontconfig.enable = true;
-
   home.activation = {
     wallpapa = lib.hm.dag.entryAfter["writeBoundary"] ''
       ${wallpapa}/bin/wallpapa
     '';
   };
-
+  
 
   home.packages = with pkgs; [
     berkeley-mono
     pfetch
     wallpapa
     skhd
+    (nerdfonts.override { fonts = [ "Hack" ]; })
   ];
 
 
   home.file = { 
+    ".config/sketchybar/plugins/datetime.sh" = {
+      enable = true;
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        sketchybar --set $NAME label="$(date '+%F %X')"
+      '';
+    };
+    ".config/sketchybar/plugins/battery.sh" = {
+      enable = true;
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        PERCENTAGE=$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)
+        CHARGING=$(pmset -g batt | grep 'AC Power')
+
+        if [ $PERCENTAGE = "" ]; then
+          exit 0
+        fi
+
+        case $\{PERCENTAGE\} in
+          9[0-9]|100) ICON=" "
+        ;;
+          [6-8][0-9]) ICON=" "
+        ;;
+          [3-5][0-9]) ICON=" "
+        ;;
+          [1-2][0-9]) ICON=" "
+        ;;
+          *) ICON=" "
+        esac
+
+        if [[ $CHARGING != "" ]]; then
+          ICON=""
+        fi
+
+        sketchybar --set $NAME icon="$ICON" label="$PERCENTAGE%"
+      '';
+    };
     ".config/sketchybar/sketchybarrc" = {
       enable = true;
       executable = true;
       text = ''
+        PLUGINS="$CONFIG_DIR/plugins"
+
         sketchybar --bar \
           color=0xcc161616 \
           shadow=off \
@@ -49,24 +90,27 @@ in
           border_width=3 \
           font_smoothing=on \
           blur_radius=3
-
-        sketchybar --add item time right \
-          --set time \
-            update_freq=5 
-            label=howdy
-            script="sketchybar --set time label=\"$(date '+%d/%m %H:%M')\""
-
+        
         sketchybar --default \
           padding_left=12 \
           padding_right=12 \
           label.font="Berkeley Mono:Bold:18.0" \
-          label.color=0xffffffff
+          label.color=0xffffffff \ 
+          updates=when_show
+          icon.font="Hack Nerd Font:Bold:36.0"
 
-        sketchybar --add item battery right \
+        sketchybar --add item time right \
+          --set time \
+            update_freq=5 \
+            script="$PLUGINS/datetime.sh"
+
+       sketchybar --add item battery right \
           --set battery \
-            script="sketchybar --set battery label=\"$(pmset -g batt | grep -o "\d+%" | cut -d% -f1)\"%" \
-            update_freq=120 \
+            script="$PLUGINS/battery.sh" \
+            update_freq=10 \
           --subscribe battery system_woke power_source_change 
+
+        sketchybar --update
       '';
     };
     ".config/skhd/skhdrc" = {
@@ -119,6 +163,7 @@ in
     grep = "rg";
     pfetch = "PF_ASCII=\"Linux\" pfetch";
     clear = "clear && pfetch";
+    suramba = "sudo rm -rf /etc/bashrc /etc/zshenv /etc/zshrc";
   };
 
   programs = {
@@ -159,6 +204,7 @@ in
       settings = {
         allow_remote_control = true;
         macos_traditional_fullscreen = true;
+        hide_window_decorations = "titlebar-only";
         dynamic_background_opacity = true;
         scrollback_lines = 10000;
         enable_audio_bell = false;
@@ -280,6 +326,34 @@ in
     zellij = {
       enable = true;
       enableZshIntegration = true;
+      settings = {
+        default_shell = "zsh";
+        simplified_ui = true;
+        pane_frames = false;
+        # default_layout = "compact";
+        ui = {
+          pane_frames = {
+            rounded_corners = true;
+            hide_session_name = true;
+          };
+        };
+        theme = "default";
+        themes = {
+          default = {
+            fg = "#ffffff";
+            bg = "#161616";
+            black = "#262626";
+            red = "#ee5396";
+            green = "#3ddbd9";
+            yellow = "#ffe97b";
+            blue = "#33b1ff";
+            magenta = "#ff7eb6";
+            cyan = "#3ddbd9";
+            white = "#dde1e6";
+            orange = "#3ddbd9";
+          };
+        };
+      };
     };
     fzf = {
       enable = true;

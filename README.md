@@ -22,3 +22,8 @@ yabai bug fix:
 rm /tmp/yabai*
 yabai --restart-service
 ```
+
+skhd bug fix:
+```
+skhd --reload
+```
