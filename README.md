@@ -16,3 +16,9 @@ cmd - s : app launcher
 cmd - q : kitty launch
 cmd - c : close window
 ```
+
+yabai bug fix:
+```
+rm /tmp/yabai*
+yabai --restart-service
+```

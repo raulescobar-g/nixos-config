@@ -24,9 +24,17 @@
   time = {
     timeZone = "America/Chicago";
   };
+  system.activationScripts = {
+    postUserActivation.text = ''
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    '';
+  };
 
   system = {
     defaults = {
+      loginwindow = {
+        autoLoginUser = "Raul Escobar";
+      };
       finder = {
         CreateDesktop = false;
       };
@@ -37,7 +45,12 @@
         orientation = "bottom";
         tilesize = 48;
         static-only = true;
+        mru-spaces = false;
       };
+      trackpad = {
+        TrackpadThreeFingerDrag = false;
+      };
+      
     };
   };
 
@@ -46,53 +59,18 @@
     coreutils
     discord
     spotify
-    prismlauncher
   ];
 
   services = {
     yabai = {
       enable = true;
       enableScriptingAddition = true;
-      config = {
-        mouse_follows_focus = false;
-        focus_follows_mouse = true;
-        window_animation_frame_rate = 120;
-        window_shadow = true;
-        window_opacity = true;
-        active_window_border_color = "0xFF88C0D0";
-        normal_window_border_color = "0x002E3440";
-        insert_feedback_color = "0xFFA3BE8C";
-        window_border = true;
-        mouse_modifier = "cmd";
-        top_padding = 12;
-        bottom_padding = 12;
-        right_padding = 12;
-        left_padding = 12;
-        window_gap = 12;
-        layout = "bsp";
-      };
-    };
+   };
     skhd = {
       enable = true;
-      skhdConfig = ''
-        ctrl - j: yabai -m window --focus south
-        ctrl - k: yabai -m window --focus north
-        ctrl - h: yabai -m window --focus west
-        ctrl - l: yabai -m window --focus east
-        ctrl + alt - q: yabai --stop-service
-        ctrl + alt - s: yabai --start-service
-        cmd - l: yabai -m space --focus next
-        cmd - h: yabai -m space --focus prev 
-        cmd - m: yabai -m window --toggle zoom-fullscreen
-        cmd - c: yabai -m window --close
-      '';
     };
     sketchybar = {
       enable = true;
-      config = ''
-        color = 0xffffffff
-        position = top
-      '';
     };
   };
   
