@@ -27,6 +27,8 @@ in
     wallpapa
     skhd
     (nerdfonts.override { fonts = [ "Hack" ]; })
+    spotify-tui
+    discordo
   ];
 
 
@@ -37,6 +39,13 @@ in
       text = ''
         #!/usr/bin/env bash
         sketchybar --set $NAME label="$(date '+%F %X')"
+      '';
+    };
+    ".config/sketchybar/plugins/spotify.sh" = {
+      enable = true;
+      executable = true;
+      text = ''
+        
       '';
     };
     ".config/sketchybar/plugins/battery.sh" = {
@@ -77,7 +86,7 @@ in
         PLUGINS="$CONFIG_DIR/plugins"
 
         sketchybar --bar \
-          color=0xcc161616 \
+          color=0x11111111 \
           shadow=off \
           y_offset=6 \
           corner_radius=12 \
@@ -86,30 +95,53 @@ in
           margin=6 \
           height=48 \
           display=all \
-          border_color=0xff3ddbd9 \
-          border_width=3 \
-          font_smoothing=on \
-          blur_radius=3
+          font_smoothing=on 
         
         sketchybar --default \
           padding_left=12 \
           padding_right=12 \
           label.font="Berkeley Mono:Bold:18.0" \
-          label.color=0xffffffff \ 
-          updates=when_show
-          icon.font="Hack Nerd Font:Bold:36.0"
+          label.color=0xffffffff \
+          icon.font="Hack Nerd Font:Bold:18.0"
 
         sketchybar --add item time right \
           --set time \
             update_freq=5 \
             script="$PLUGINS/datetime.sh"
 
-       sketchybar --add item battery right \
+        sketchybar --add item battery right \
           --set battery \
             script="$PLUGINS/battery.sh" \
             update_freq=10 \
           --subscribe battery system_woke power_source_change 
+        
+        sketchybar --add item spotify e\
+          --set spotify \
+          icon= \
+          icon.y_offset=1 
+        
+        sketchybar --add bracket sysinfo spotify battery time \
+          --set sysinfo background.color=0x77161616 \
+            background.height=48 \
+            background.border_color=0xff3ddbd9 \
+            background.border_width=3 \
+            background.corner_radius=12 \
+            drawing=on 
+        
+        sketchybar --add item desktops left \
+          --set desktops label=desky
 
+        sketchybar --add item application q \
+          --set application label=appy
+
+        sketchybar --add bracket userinfo desktops application \
+          --set userinfo background.color=0x77161616 \
+            background.height=48 \
+            background.border_color=0xff3ddbd9 \
+            background.border_width=3 \
+            background.corner_radius=12 \
+            drawing=on 
+ 
         sketchybar --update
       '';
     };
@@ -130,10 +162,12 @@ in
       enable = true;
       executable = true;
       text = ''
+        borders active_color="glow(0xff3ddbd9)" inactive_color=0xff525252 width=4.0 &
+
         yabai -m config mouse_follows_focus off 
         yabai -m config focus_follows_mouse autofocus 
         yabai -m config window_shadow off  
-        yabai -m config top_padding 12 
+        yabai -m config top_padding 16 
         yabai -m config bottom_padding 12  
         yabai -m config right_padding 12  
         yabai -m config left_padding 12  
@@ -153,7 +187,7 @@ in
 
   home.shellAliases = {
     renix = "darwin-rebuild switch --flake .#macbook";
-    ls = "eza";
+    ls = "eza --icons";
     cat = "bat";
     cd = "z";
     ll = "eza -l -g --icons --git";
@@ -205,6 +239,7 @@ in
         allow_remote_control = true;
         macos_traditional_fullscreen = true;
         hide_window_decorations = "titlebar-only";
+        window_padding_width = 6;
         dynamic_background_opacity = true;
         scrollback_lines = 10000;
         enable_audio_bell = false;
@@ -330,7 +365,7 @@ in
         default_shell = "zsh";
         simplified_ui = true;
         pane_frames = false;
-        # default_layout = "compact";
+        default_layout = "compact";
         ui = {
           pane_frames = {
             rounded_corners = true;

@@ -60,8 +60,8 @@
     discord
     spotify
   ];
-
-  services = {
+  
+ services = {
     yabai = {
       enable = true;
       enableScriptingAddition = true;

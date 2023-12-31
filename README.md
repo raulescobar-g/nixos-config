@@ -9,6 +9,9 @@
 | IDE          | neovim        | neovim        |
 | Font         | Berkeley-mono | Berkeley-mono |
 
+spotify - spt
+discord  dirscordo
+
 ```
 ctrl - hjkl : navigate window focus
 cmd - hl : navigate workspace focus
