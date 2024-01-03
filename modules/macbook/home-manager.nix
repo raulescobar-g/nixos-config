@@ -5,7 +5,12 @@ let
       #!/usr/bin/env bash 
       WALLPAPER_DIR="$HOME/Wallpapers"
       RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
-      /usr/bin/osascript -e "tell application \"System Events\" to set picture of every desktop to \"$RANDOM_WALLPAPER\""
+      /usr/bin/osascript -e "
+        tell application \"System Events\"
+          tell every desktop
+            set picture to \"$RANDOM_WALLPAPER\"
+          end tell
+        end tell"
     '';
 in
 {
@@ -29,23 +34,39 @@ in
     (nerdfonts.override { fonts = [ "Hack" ]; })
     spotify-tui
     discordo
+    jq
   ];
 
 
-  home.file = { 
+  home.file = let 
+    barHeight= toString 38; 
+  in { 
     ".config/sketchybar/plugins/datetime.sh" = {
       enable = true;
       executable = true;
       text = ''
         #!/usr/bin/env bash
-        sketchybar --set $NAME label="$(date '+%F %X')"
+        sketchybar --set $NAME label="$(date '+%I%M  %m%d')"
       '';
     };
-    ".config/sketchybar/plugins/spotify.sh" = {
+    ".config/sketchybar/plugins/desktops.sh" = {
       enable = true;
       executable = true;
       text = ''
-        
+        #!/usr/bin/env bash
+        DATA="$(yabai -m query --spaces --space)"
+        DESKTOP="$(DATA | jq '.index')"
+        sketchybar --set $NAME label="$DESKTOP"
+      '';
+    };
+    "/.config/sketchybar/plugins/application.sh" = {
+      enable = true;
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        APP=$(osascript -e 'tell application "System Events" to get name of application processes whose frontmost is true and visible is true')
+
+        sketchybar --set $NAME label=$APP
       '';
     };
     ".config/sketchybar/plugins/battery.sh" = {
@@ -60,23 +81,7 @@ in
           exit 0
         fi
 
-        case $\{PERCENTAGE\} in
-          9[0-9]|100) ICON=" "
-        ;;
-          [6-8][0-9]) ICON=" "
-        ;;
-          [3-5][0-9]) ICON=" "
-        ;;
-          [1-2][0-9]) ICON=" "
-        ;;
-          *) ICON=" "
-        esac
-
-        if [[ $CHARGING != "" ]]; then
-          ICON=""
-        fi
-
-        sketchybar --set $NAME icon="$ICON" label="$PERCENTAGE%"
+        sketchybar --set $NAME label="$PERCENTAGE"
       '';
     };
     ".config/sketchybar/sketchybarrc" = {
@@ -84,28 +89,43 @@ in
       executable = true;
       text = ''
         PLUGINS="$CONFIG_DIR/plugins"
+        BAR_HEIGHT=${barHeight}
+        BG_PADDING=12
+        BG_HEIGHT=$((BAR_HEIGHT-BG_PADDING))
 
         sketchybar --bar \
-          color=0x11111111 \
+          color=0x00000000 \
           shadow=off \
-          y_offset=6 \
-          corner_radius=12 \
-          padding_left=3 \
-          padding_right=3 \
-          margin=6 \
-          height=48 \
-          display=all \
-          font_smoothing=on 
+          y_offset=3 \
+          corner_radius=0 \
+          padding_left=10 \
+          padding_right=10 \
+          notch_width=190 \
+          margin=0 \
+          height=$BAR_HEIGHT \
+          display=all 
         
         sketchybar --default \
-          padding_left=12 \
-          padding_right=12 \
-          label.font="Berkeley Mono:Bold:18.0" \
+          label.font="Berkeley Mono:Bold:20.0" \
           label.color=0xffffffff \
-          icon.font="Hack Nerd Font:Bold:18.0"
+          label.padding_right=10 \
+          label.padding_left=10 \
+          icon.font="Hack Nerd Font:Bold:20.0" \
+          icon.color=0xffffffff \
+          icon.padding_left=0 \
+          icon.padding_right=0 \
+          padding_left=10 \
+          padding_right=10 \
+          background.height=$BG_HEIGHT \
+          background.color=0xff393939 \
+          background.corner_radius=4 
 
         sketchybar --add item time right \
           --set time \
+            label.padding_right=12 \
+            label.padding_left=12 \
+            icon.padding_left=0 \
+            icon.padding_right=0 \
             update_freq=5 \
             script="$PLUGINS/datetime.sh"
 
@@ -113,35 +133,37 @@ in
           --set battery \
             script="$PLUGINS/battery.sh" \
             update_freq=10 \
+            icon.y_offset=1 \
           --subscribe battery system_woke power_source_change 
         
-        sketchybar --add item spotify e\
-          --set spotify \
-          icon= \
-          icon.y_offset=1 
-        
-        sketchybar --add bracket sysinfo spotify battery time \
-          --set sysinfo background.color=0x77161616 \
-            background.height=48 \
-            background.border_color=0xff3ddbd9 \
-            background.border_width=3 \
-            background.corner_radius=12 \
+        sketchybar --add bracket sysinfo battery time \
+          --set sysinfo background.color=0xff161616 \
+            background.corner_radius=6 \
+            background.height=$BAR_HEIGHT \
+            background.border_color=0xffffffff \
+            background.border_width=0 \
+            background.y_offset=0 \
             drawing=on 
         
         sketchybar --add item desktops left \
-          --set desktops label=desky
+          --set desktops \
+            script="$PLUGINS/desktops.sh" \
+            update_freq=1 \
+          --subscribe desktops space_change display_change
 
         sketchybar --add item application q \
-          --set application label=appy
-
+          --set application script="$PLUGINS/application.sh" \
+          --subscribe application front_app_switched space_change space_windows_change display_change
+          
         sketchybar --add bracket userinfo desktops application \
-          --set userinfo background.color=0x77161616 \
-            background.height=48 \
-            background.border_color=0xff3ddbd9 \
-            background.border_width=3 \
-            background.corner_radius=12 \
+          --set userinfo background.color=0xff161616 \
+            background.height=$BAR_HEIGHT \
+            background.border_color=0xffffffff \
+            background.border_width=0 \
+            background.corner_radius=6 \
+            background.y_offset=0 \
             drawing=on 
- 
+         
         sketchybar --update
       '';
     };
@@ -156,6 +178,7 @@ in
         cmd - l: yabai -m space --focus next
         cmd - h: yabai -m space --focus prev 
         cmd - m: yabai -m window --toggle zoom-fullscreen
+
       '';
     };
     ".config/yabai/yabairc" = {
@@ -167,12 +190,12 @@ in
         yabai -m config mouse_follows_focus off 
         yabai -m config focus_follows_mouse autofocus 
         yabai -m config window_shadow off  
-        yabai -m config top_padding 16 
+        yabai -m config top_padding 12 
         yabai -m config bottom_padding 12  
         yabai -m config right_padding 12  
         yabai -m config left_padding 12  
         yabai -m config window_gap 12  
-        yabai -m config external_bar all:48:0 
+        yabai -m config external_bar all:${barHeight}:0 
         yabai -m config layout bsp  
 
         yabai -m rule --add app='System Preferences' manage=off
@@ -239,29 +262,43 @@ in
         allow_remote_control = true;
         macos_traditional_fullscreen = true;
         hide_window_decorations = "titlebar-only";
-        window_padding_width = 6;
+        window_padding_width = 4;
         dynamic_background_opacity = true;
         scrollback_lines = 10000;
         enable_audio_bell = false;
         update_check_interval = 0;
-        foreground = "#ffffff";
+        foreground = "#dde1e6";
         background = "#161616";
-        background_opacity = "0.8";
+        background_opacity = "1.0";
         background_blur = 0;
-        selection_foreground = "#161616";
-        selection_background = "#ee5396";
+        selection_foreground = "#f2f4f8";
+        selection_background = "#525252";
+        cursor = "#f2f4f8";
+        cursor_text_color = "#393939";
+        url_color = "#ee5396";
+        url_style = "single";
+        active_border_color = "#ee5396";
+        inactive_border_color = "#ff7eb6";
+        bell_border_color = "#ee5396";
+        wayland_titlebar_color = "system";
+        macos_titlebar_color = "system";
+        active_tab_foreground = "#161616";
+        active_tab_background = "#ee5396";
+        inactive_tab_foreground = "#dde1e6";
+        inactive_tab_background = "#393939";
+        tab_bar_background = "#161616";
         color0 = "#262626";
         color8 = "#393939";
-        color1 = "#ee5396";
-        color9 = "#ee5396";
+        color1 = "#ff7eb6";
+        color9 = "#ff7eb6";
         color2 = "#42be65";
         color10 = "#42be65";
-        color3 = "#ffe97b";
-        color11 = "#ffe97b";
+        color3 = "#82cfff";
+        color11 = "#82cfff";
         color4 = "#33b1ff";
         color12 = "#33b1ff";
-        color5 = "#ff7eb6";
-        color13 = "#ff7eb6";
+        color5 = "#ee5396";
+        color13 = "#ee5396";
         color6 = "#3ddbd9";
         color14 = "#3ddbd9";
         color7 = "#dde1e6";
