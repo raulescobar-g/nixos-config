@@ -1,17 +1,47 @@
 { config, pkgs, lib, ...}:
-let 
+let
+  barHeight = "38"; 
+  windowPadding = "12";
+  grey100 = "161616";
+  grey90 = "262626";
+  grey80 = "393939";
+  grey70 = "525252";
+  coolGrey20 = "dde1e6";
+  coolGrey10 = "f2f4f8";
+  coolGrey0 = "ffffff";
+  teal40 = "08bdba";
+  teal30 = "3ddbd9";
+  blue40 = "78a9ff";
+  magenta50 = "ee5396";
+  magenta40 = "ff7eb6";
+  green40 = "42be65";
+  purple40 = "be95ff";
+  cyan40 = "33b1ff";
+  cyan30 = "82cfff";
   berkeley-mono = pkgs.callPackage ../font/berkeley-mono.nix {};
   wallpapa = pkgs.writeShellScriptBin "wallpapa" ''
-      #!/usr/bin/env zsh
-      WALLPAPER_DIR="$HOME/Wallpapers"
-      RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
-      /usr/bin/osascript -e "
-        tell application \"System Events\"
-          tell every desktop
-            set picture to \"$RANDOM_WALLPAPER\"
-          end tell
-        end tell"
-    '';
+    #!/usr/bin/env zsh
+    WALLPAPER_DIR="$HOME/Wallpapers"
+    RANDOM_WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
+    /usr/bin/osascript -e "
+      tell application \"System Events\"
+        tell every desktop
+          set picture to \"$RANDOM_WALLPAPER\"
+        end tell
+      end tell"
+  '';
+  zenna = pkgs.writeShellScriptBin "zenna" ''
+    #!/usr/bin/env zsh
+    IN_ZEN=$(sketchybar --query bar | jq '.y_offset')
+    
+    if [ $IN_ZEN == "0" ]; then
+      sketchybar --bar hidden=on y_offset=-1 
+      yabai -m config external_bar all:0:0 
+    else    
+      sketchybar --bar hidden=off y_offset=0
+      yabai -m config external_bar all:${barHeight}:0
+    fi
+  '';
 in
 {
   home.username = "raulescobar";
@@ -22,6 +52,7 @@ in
   
   home.packages = with pkgs; [
     berkeley-mono
+    zenna
     pfetch
     uwufetch
     wallpapa
@@ -33,9 +64,7 @@ in
   ];
 
 
-  home.file = let 
-    barHeight= toString 38; 
-  in { 
+  home.file = { 
     ".config/sketchybar/plugins/datetime.sh" = {
       enable = true;
       executable = true;
@@ -190,7 +219,7 @@ in
         cmd - l: yabai -m space --focus next 
         cmd - h: yabai -m space --focus prev 
         cmd - m: yabai -m window --toggle zoom-fullscreen
-
+        cmd - b: zenna
       '';
     };
     ".config/yabai/yabairc" = {
@@ -203,11 +232,11 @@ in
         yabai -m config mouse_follows_focus off 
         yabai -m config focus_follows_mouse autofocus 
         yabai -m config window_shadow off  
-        yabai -m config top_padding 12 
-        yabai -m config bottom_padding 12  
-        yabai -m config right_padding 12  
-        yabai -m config left_padding 12  
-        yabai -m config window_gap 12  
+        yabai -m config top_padding ${windowPadding} 
+        yabai -m config bottom_padding ${windowPadding} 
+        yabai -m config right_padding ${windowPadding} 
+        yabai -m config left_padding ${windowPadding} 
+        yabai -m config window_gap ${windowPadding}  
         yabai -m config external_bar all:${barHeight}:0 
         yabai -m config layout bsp  
 
@@ -275,13 +304,13 @@ in
         allow_remote_control = true;
         macos_traditional_fullscreen = true;
         hide_window_decorations = "titlebar-only";
-        window_padding_width = 4;
+        window_padding_width = 0;
         dynamic_background_opacity = true;
         scrollback_lines = 10000;
         enable_audio_bell = false;
         update_check_interval = 0;
-        foreground = "#dde1e6";
-        background = "#161616";
+        foreground = "#" + coolGrey20;
+        background = "#" + grey100;
         background_opacity = "1.0";
         background_blur = 0;
         selection_foreground = "#f2f4f8";
@@ -295,11 +324,11 @@ in
         bell_border_color = "#ee5396";
         wayland_titlebar_color = "system";
         macos_titlebar_color = "system";
-        active_tab_foreground = "#161616";
+        active_tab_foreground = "#" + grey100;
         active_tab_background = "#ee5396";
-        inactive_tab_foreground = "#dde1e6";
+        inactive_tab_foreground = "#" + coolGrey20;
         inactive_tab_background = "#393939";
-        tab_bar_background = "#161616";
+        tab_bar_background = "#" + grey100;
         color0 = "#262626";
         color8 = "#393939";
         color1 = "#ff7eb6";
@@ -314,7 +343,7 @@ in
         color13 = "#ee5396";
         color6 = "#3ddbd9";
         color14 = "#3ddbd9";
-        color7 = "#dde1e6";
+        color7 = "#" + coolGrey20;
         color15 = "#ffffff";
       };
     };
