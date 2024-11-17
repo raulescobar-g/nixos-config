@@ -1,14 +1,10 @@
 { config, pkgs, ... }:
-let 
-   berkeley-mono = pkgs.callPackage ./fonts/berkeley-mono.nix {};
-in
 {
   home.username = "raulescobar";
   home.homeDirectory = "/home/raulescobar";
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
   home.packages = with pkgs; [
-    berkeley-mono
     kitty
     swww
     # # It is sometimes useful to fine-tune packages, for example, by applying
@@ -123,47 +119,6 @@ in
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
-      coc.enable = true;
-      extraLuaConfig = ''
-	vim.g.mapleader = ' '
-	vim.g.maplocalleader = ' '
-        vim.o.tabstop = 2
-        vim.o.softtabstop = 2
-        vim.o.shiftwidth = 2
-        vim.o.expandtab = true
-        vim.o.hlsearch = false
-        vim.wo.number = true
-        vim.wo.relativenumber = true
-        vim.o.mouse = 'a'
-        vim.o.clipboard = 'unnamedplus'
-        vim.o.breakindent = true
-        vim.o.undofile = true
-        vim.o.ignorecase = true
-        vim.o.smartcase = true
-        vim.wo.signcolumn = 'yes'
-        vim.o.updatetime = 250
-        vim.o.timeoutlen = 300
-        vim.o.completeopt = 'menuone,noselect'
-        vim.o.termguicolors = true
-        vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-        vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-        vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-      '';
-      plugins = with pkgs.vimPlugins; [
-	vim-fugitive
-	vim-rhubarb
-	vim-sleuth
-	nvim-lspconfig
-	nvim-cmp
-	vim-which-key
-	gitsigns-nvim
-	oxocarbon-nvim
-	lualine-nvim
-	indent-blankline-nvim
-	comment-nvim
-	telescope-nvim
-	nvim-treesitter
-      ];
     };
     fzf = {
       enable = true;
@@ -208,9 +163,9 @@ in
         "-o allow_remote_control=yes" 
       ];
       font = {
-        package = berkeley-mono;
-	name = "Berkeley Mono";
-	size = 14;
+        size = 14;
+        name = "Iosevka";
+        package = (nerdfonts.override { fonts = [ "Iosevka" ]; });
       };
       environment = { "KITTY_ENABLE_WAYLAND"="1"; };
       keybindings = {
@@ -286,10 +241,13 @@ in
   };
 
   fonts = {
+    packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "Iosevka" ]; }) 
+    ]
     fontconfig = {
       enable = true;
       defaultFonts = {
-	monospace = [ "Berkeley-Mono" ];
+	monospace = "Iosevka";
 	#sansSerif = "";
 	#serif = "";
 	#emoji = "";
@@ -362,11 +320,4 @@ in
   #  /etc/profiles/per-user/raulescobar/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = { };
-
-  xdg.configFile = {
-    "nvim" = {
-      source = ../.config/nvim;
-      recursive = true;
-    };
-  };
 }
