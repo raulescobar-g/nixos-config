@@ -59,7 +59,6 @@
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  sound.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -88,6 +87,7 @@
       dunst
       libnotify
       rofi-wayland
+      libinput
     ];
   };
   programs.zsh.enable = true;

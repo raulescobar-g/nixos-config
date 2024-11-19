@@ -1,17 +1,31 @@
 { config, pkgs, ... }:
 {
+  nixpkgs.config.allowUnfree = true;
+
   home.username = "raulescobar";
   home.homeDirectory = "/home/raulescobar";
   home.stateVersion = "24.05"; # Please read the comment before changing.
-
+  
   home.packages = with pkgs; [
     kitty
     swww
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    (nerdfonts.override {
+      fonts = [
+        "Iosevka"
+        "IosevkaTerm"
+      ];
+    })
+    discord
+    whatsapp-for-linux
+    xorg.xrandr
+    bc
+    brightnessctl
+    acpi
+    python312
+    ruff
+    (pkgs.python312.withPackages (ppkgs: [
+      ppkgs.psutil
+    ]))
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -165,7 +179,11 @@
       font = {
         size = 14;
         name = "Iosevka";
-        package = (nerdfonts.override { fonts = [ "Iosevka" ]; });
+        package = (pkgs.nerdfonts.override {
+          fonts = [
+            "Iosevka"
+          ];
+        });
       };
       environment = { "KITTY_ENABLE_WAYLAND"="1"; };
       keybindings = {
@@ -241,13 +259,10 @@
   };
 
   fonts = {
-    packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "Iosevka" ]; }) 
-    ]
     fontconfig = {
       enable = true;
       defaultFonts = {
-	monospace = "Iosevka";
+	monospace = [ "Iosevka" ];
 	#sansSerif = "";
 	#serif = "";
 	#emoji = "";
@@ -262,16 +277,37 @@
 
     settings = {
       monitor = ",preferred,auto,auto";
-
+      binde = [
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+" 
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86MonBrightnessUp, exec, brightnessctl s +5%"
+        ", XF86MonBrightnessDown, exec, brightnessctl s 5%-"
+      ];
+      general = {
+        border_size = 1;
+        gaps_in = 4;
+        gaps_out = 4;
+        "col.inactive_border" = "0xff444444";
+        "col.active_border" = "0xffffffff";
+      };
+      decoration = {
+        rounding = 4;
+        active_opacity = 1.0;
+        inactive_opacity = 0.8;
+        dim_inactive = true;
+        dim_strength = 0.1;
+      };
       input = {
 	touchpad = {
+          natural_scroll = true;
 	  scroll_factor = 0.2;
 	};
 	kb_options = [ "altwin:swap_alt_win" ];
       };
       
       exec-once = [
-	"eww open side-bar --config ~/Documents/ma-bar"
+	"eww open side-bar"
 	"swww-daemon & swww img ~/Wallpaper/kitty.png"
       ];
       env = [
