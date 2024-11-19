@@ -1,9 +1,6 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, inputs, ... }:
-
+{ config, pkgs, inputs, ... }: let
+  themes = pkgs.callPackage ./sddm-theme.nix {};
+in 
 {
   imports =
     [ 
@@ -35,12 +32,8 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "America/Chicago";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -57,6 +50,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
+  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -115,6 +109,8 @@
     sddm = {
       enable = true;
       wayland.enable = true;
+      #autoLogin.relogin = true;
+      theme = "sddm-tokyo-night";
     };
   };
 
@@ -125,7 +121,9 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [];
+  environment.systemPackages = with pkgs; [
+    themes.sddm-tokyo-night
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

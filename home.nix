@@ -17,11 +17,8 @@
     })
     discord
     whatsapp-for-linux
-    xorg.xrandr
-    bc
+    alsa-utils 
     brightnessctl
-    acpi
-    python312
     ruff
     (pkgs.python312.withPackages (ppkgs: [
       ppkgs.psutil
@@ -262,10 +259,10 @@
     fontconfig = {
       enable = true;
       defaultFonts = {
-	monospace = [ "Iosevka" ];
-	#sansSerif = "";
-	#serif = "";
-	#emoji = "";
+        monospace = [ "Iosevka" ];
+        #sansSerif = "";
+        #serif = "";
+        #emoji = "";
       };
     };
   };
@@ -287,7 +284,7 @@
       general = {
         border_size = 1;
         gaps_in = 4;
-        gaps_out = 4;
+        gaps_out = "4,54,4,4";
         "col.inactive_border" = "0xff444444";
         "col.active_border" = "0xffffffff";
       };
@@ -299,27 +296,27 @@
         dim_strength = 0.1;
       };
       input = {
-	touchpad = {
+        touchpad = {
           natural_scroll = true;
-	  scroll_factor = 0.2;
-	};
-	kb_options = [ "altwin:swap_alt_win" ];
+          scroll_factor = 0.2;
+        };
+        kb_options = [ "altwin:swap_alt_win" ];
       };
       
       exec-once = [
-	"eww open side-bar"
-	"swww-daemon & swww img ~/Wallpaper/kitty.png"
+        "eww open side-bar"
+        "swww-daemon & swww img ~/Wallpaper/kitty.png"
       ];
       env = [
-	"XCURSOR_SIZE,24"	
+        "XCURSOR_SIZE,24"	
       ];
 
       "$mainMod" = "SUPER";	
       bind = [
-	"$mainMod, Q, killactive"	
-	"$mainMod, S, exec, rofi -show drun -show-icons" 
-	"$mainMod, H, workspace, -1"
-	"$mainMod, L, workspace, +1"
+        "$mainMod, Q, killactive"	
+        "$mainMod, S, exec, rofi -show drun -show-icons" 
+        "$mainMod, H, workspace, -1"
+        "$mainMod, L, workspace, +1"
       ];
     };
   };
