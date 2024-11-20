@@ -23,7 +23,7 @@
     (pkgs.python312.withPackages (ppkgs: [
       ppkgs.psutil
     ]))
-    (writeShellScriptBin "toggle-sidebar" (import scripts/toggle-sidebar.sh))
+    (writeShellScriptBin "toggle-sidebar" (builtins.readFile scripts/toggle-sidebar.sh))
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
     # # environment:
@@ -34,6 +34,10 @@
 
   programs = {
     home-manager.enable = true; # important dont remove
+    eww = {
+      enable = true;
+      configDir = ./eww;
+    };
     wofi = {
       enable = true;
       settings = {
@@ -439,6 +443,6 @@
   #  /etc/profiles/per-user/raulescobar/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = { 
-    LOCK_DIR = "~/.lockfiles";
+    LOCK_DIR = "$HOME/.lockfiles";
   };
 }

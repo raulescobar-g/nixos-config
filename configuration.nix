@@ -77,7 +77,6 @@ in
       git
       google-chrome
       kitty 
-      eww
       dunst
       libnotify
       libinput

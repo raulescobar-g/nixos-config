@@ -1,0 +1,56 @@
+(defvar time-visible true)   
+(defpoll time :interval "1m"
+  :initial "00 : 00"
+  :run-while time-visible 
+  "scripts/time.py")
+
+(defvar date-visible true)
+(defpoll date :interval "1h"
+  :initial "00 / 00"
+  :run-while date-visible
+  "scripts/date.py")
+
+(defvar vol-visible true)
+(defpoll volume :interval "0.2s"
+  :initial "    0 "
+  :runwhile vol-visible
+  "scripts/volume.py")
+
+
+(defvar brightness-visible true)
+(defpoll brightness :interval "0.2s"
+  :initial "    0 "
+  :runwhile brightness-visible
+  "scripts/brightness.py")
+
+(defvar battery-visible true)
+(defpoll battery :interval "1m"
+  :initial "    0 󱊢"
+  :runwhile battery-visible
+  "scripts/battery.py")
+
+(defwindow side-bar 
+  :monitor 0
+  :geometry (geometry 
+    :x "4px"
+    :y "0px"
+    :width "50px"
+    :height "990px"
+    :anchor "right center")
+  :stacking "fg"
+  :exclusive true 
+  :focusable false 
+  :namespace "side-bar"
+
+  (box :orientation "v" 
+    (box :valign "start" :orientation "v"
+      (label :halign "end" :text battery)
+      (label :halign "end" :text volume)
+      (label :halign "end" :text brightness))
+    (box :valign "center" :orientation "v"
+      (label :text "mid"))
+    (box :valign "end" :orientation "v" 
+      (label :text date)
+      (label :text time))
+  ))
+

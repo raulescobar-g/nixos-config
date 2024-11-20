@@ -1,0 +1,13 @@
+* {
+  all: unset;
+}
+
+.side-bar {
+  font-family: 'Isoveka';
+  background-color: #161616;
+  color: #ffffff;
+  font-size: 14;
+  border-radius: 4px;
+  padding:2px;
+  border: 1px solid #ffffff;
+}

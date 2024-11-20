@@ -1,7 +1,7 @@
 #!/bin/env zsh
 
 WIDGET="side-bar"
-LOCK_FILE="$LOCK_DIR/${WIDGET}.lock"
+LOCK_FILE="${LOCK_DIR}/${WIDGET}.lock"
 
 run() {
     eww open ${WIDGET} 
