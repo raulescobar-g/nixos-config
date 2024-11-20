@@ -1,12 +1,12 @@
 { stdenv }:
 {
   oxocarbon-sddm-theme = stdenv.mkDerivation rec {
-    pname = "oxocarbon-sddm-theme";
+    name = "oxocarbon-sddm-theme";
     dontBuild = true;
     installPhase = ''
       mkdir -p $out/share/sddm/themes
-      cp -aR $src $out/share/sddm/themes/${pname}
+      cp -aR $src $out/share/sddm/themes/${name}
     '';
-    src = builtins.fetchDir ./sddm 
+    src = .;
   };
 }

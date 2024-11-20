@@ -1,4 +1,4 @@
-#!/bin/env zsh
+#!/usr/bin/env zsh
 
 WIDGET="side-bar"
 LOCK_FILE="${LOCK_DIR}/${WIDGET}.lock"

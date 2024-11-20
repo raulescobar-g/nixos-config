@@ -1,5 +1,5 @@
 { config, pkgs, inputs, ... }: let
-  themes = pkgs.callPackage ./sddm.nix {};
+  themes = pkgs.callPackage ./sddm/sddm.nix {};
 in 
 {
   imports =
