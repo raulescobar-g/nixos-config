@@ -1,0 +1,12 @@
+[SddmGreeterTheme]
+Name=Oxocarbon Theme
+Description=An Oxocarbon Theme for SDDM
+Author=raulescobar-g
+License=GPL-3.0-or-later
+Type=sddm-theme
+Version=1.0
+Website=https://github.com/raulescobar-g/oxocarbon-sddm-theme/
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=oxocarbon-sddm-theme
+
