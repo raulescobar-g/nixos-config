@@ -80,7 +80,6 @@ in
       eww
       dunst
       libnotify
-      rofi-wayland
       libinput
     ];
   };
@@ -100,7 +99,7 @@ in
   services.xserver = {
     enable = false;
   };
-
+  
   services.displayManager = {
     autoLogin = {
       enable = true;
@@ -110,7 +109,7 @@ in
       enable = true;
       wayland.enable = true;
       #autoLogin.relogin = true;
-      theme = "sddm-tokyo-night";
+      theme = "oxocarbon-sddm-theme";
     };
   };
 
@@ -119,10 +118,11 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-    themes.sddm-tokyo-night
+    libsForQt5.qt5.qtquickcontrols2   
+    libsForQt5.qt5.qtgraphicaleffects
+    libsForQt5.qt5.qtsvg
+    themes.oxocarbon-sddm-theme
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

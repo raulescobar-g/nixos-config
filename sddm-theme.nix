@@ -1,34 +1,18 @@
 { stdenv, fetchFromGitHub }:
 {
-  sddm-sugar-dark = stdenv.mkDerivation rec {
-    pname = "sddm-sugar-dark";
-    version = "v1.2";
+  oxocarbon-sddm-theme = stdenv.mkDerivation rec {
+    pname = "oxocarbon-sddm-theme";
+    version = "88b4b693df69c1bb9a1f28d3dd772d3f4fa76ba1";
     dontBuild = true;
     installPhase = ''
       mkdir -p $out/share/sddm/themes
       cp -aR $src $out/share/sddm/themes/${pname}
     '';
     src = fetchFromGitHub {
-      owner = "MarianArlt";
-      repo = "sddm-sugar-dark";
+      owner = "raulescobar-g";
+      repo = "oxocarbon-sddm-theme";
       rev = "${version}";
-      sha256 = "0gx0am7vq1ywaw2rm1p015x90b75ccqxnb1sz3wy8yjl27v82yhb";
+      sha256 = "sha256-hSKeGUnw1yIQP0sRfweuFb+q7arBlU50tlpSyJfzJ4I=";
     };
   };
- sddm-tokyo-night = stdenv.mkDerivation rec {
-    pname = "sddm-tokyo-night";
-    version = "320c8e74ade1e94f640708eee0b9a75a395697c6";
-    dontBuild = true;
-    installPhase = ''
-      mkdir -p $out/share/sddm/themes
-      cp -aR $src $out/share/sddm/themes/${pname}
-    '';
-    src = fetchFromGitHub {
-      owner = "rototrash";
-      repo = "tokyo-night-sddm";
-      rev = "${version}";
-      sha256 = "sha256-JRVVzyefqR2L3UrEK2iWyhUKfPMUNUnfRZmwdz05wL0=";
-    };
-  };
-
 }
