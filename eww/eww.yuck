@@ -47,6 +47,7 @@
       (label :halign "end" :text battery)
       (label :halign "end" :text volume)
       (label :halign "end" :text brightness))
+
     (box :valign "center" :orientation "v"
       (label :text "mid"))
     (box :valign "end" :orientation "v" 

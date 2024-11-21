@@ -7,6 +7,6 @@
       mkdir -p $out/share/sddm/themes
       cp -aR $src $out/share/sddm/themes/${name}
     '';
-    src = .;
+    src = ./.;
   };
 }
