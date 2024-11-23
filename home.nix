@@ -7,6 +7,7 @@
   home.stateVersion = "24.05"; # Please read the comment before changing.
   
   home.packages = with pkgs; [
+    spotify
     kitty
     swww
     (nerdfonts.override {
@@ -25,6 +26,9 @@
     ]))
     (writeShellScriptBin "toggle-sidebar" (builtins.readFile scripts/toggle-sidebar.sh))
     (writeShellScriptBin "wifi" (builtins.readFile scripts/wifi.sh))
+    (writeShellScriptBin "mem" (builtins.readFile scripts/mem.sh))
+    (writeShellScriptBin "cpu" (builtins.readFile scripts/cpu.sh))
+    (writeShellScriptBin "sp" (builtins.readFile scripts/vendor/sp.sh))
     networkmanager
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -33,7 +37,6 @@
     #   echo "Hello, ${config.home.username}!"
     # '')
   ];
-
   programs = {
     home-manager.enable = true; # important dont remove
     eww = {
