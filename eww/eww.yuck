@@ -1,7 +1,7 @@
 (defpoll volume :interval "1m"
   :initial ""
   :runwhile true 
-  "scripts/volume.py")
+  "volume get")
 
 (defpoll brightness :interval "1m"
   :initial "    br"
