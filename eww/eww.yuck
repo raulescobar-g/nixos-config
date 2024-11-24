@@ -125,7 +125,7 @@
   :stacking "overlay"
   :monitor 0
   (box :orientation "v" :valign "center"
-    (image :path song-img-path :image-height 80 :preserve-aspect-ratio true)
+    (image :path song-img-path :image-height 80)
     (box :orientation "v" :valign "center"
       (label :class "artist" :text artist)
       (label :class "song" :text song)

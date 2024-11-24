@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-THUMBNAIL_DIR=$MUSIC_DIR/img.jpg
 
 name="music"
 
@@ -26,10 +25,11 @@ if [[ "$1" == "icon" ]]; then
     fi
 elif [[ "$1" == "img-path" ]]; then
     mkdir -p $MUSIC_DIR
-    #url=$(spotifycli --arturl)
-    #wget -q --output-document=$THUMBNAIL_DIR $url
+    url=$(spotifycli --arturl)
+    thumbail_dir=$MUSIC_DIR/$(date +%s).jpg
+    wget -q --output-document=$thumbnail_dir $url
 
-    echo $THUMBNAIL_DIR
+    echo $thumbnail_dir
 else 
     usage
 fi
