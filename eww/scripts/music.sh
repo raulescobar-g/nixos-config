@@ -12,7 +12,6 @@ usage() {
     echo "Commands:"
     echo "  icon"
     echo "  img-path"
-    echo "  download-img"
     echo "  help"
 }
 
@@ -26,11 +25,11 @@ if [[ "$1" == "icon" ]]; then
         echo ""
     fi
 elif [[ "$1" == "img-path" ]]; then
-    echo $THUMBNAIL_DIR
-elif [[ "$1" == "download-img" ]]; then
     mkdir -p $MUSIC_DIR
-    url=$(spotifycli --arturl)
-    wget --output-document=$THUMBNAIL_DIR $url
+    #url=$(spotifycli --arturl)
+    #wget -q --output-document=$THUMBNAIL_DIR $url
+
+    echo $THUMBNAIL_DIR
 else 
     usage
 fi

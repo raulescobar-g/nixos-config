@@ -7,6 +7,7 @@
   home.stateVersion = "24.05"; # Please read the comment before changing.
   
   home.packages = with pkgs; [
+    hyprshot
     spotify
     spotify-cli-linux
     swww
@@ -415,6 +416,9 @@
         "$mainMod, H, workspace, -1"
         "$mainMod, L, workspace, +1"
         "$mainMod, B, exec, toggle-sidebar"
+        "$mainMod, PRINT, exec, hyprshot -m window -c"
+        ", PRINT, exec, hyprshot -m output -c" 
+        "SHIFT, PRINT, exec, hyprshot -m region" 
       ];
     };
   };
@@ -453,5 +457,6 @@
   home.sessionVariables = { 
     LOCK_DIR = "$HOME/.lockfiles";
     MUSIC_DIR = "$HOME/.music";
+    HYPRSHOT_DIR = "$HOME/Screenshots";
   };
 }
