@@ -9,6 +9,8 @@ description = "Nixos config flake";
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprcursor-phinger.url = "github:jappie3/hyprcursor-phinger";
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {

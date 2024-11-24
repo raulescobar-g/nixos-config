@@ -1,5 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
+  imports = [
+    inputs.hyprcursor-phinger.homeManagerModules.hyprcursor-phinger
+  ];
   nixpkgs.config.allowUnfree = true;
 
   home.username = "raulescobar";
@@ -10,39 +13,45 @@
   home.packages = with pkgs; [
     gcc
     cargo
+
     unzip
+    alsa-utils
+    brightnessctl
+    networkmanager 
+
     hyprshot
+    hyprcursor
     spotify
     spotify-cli-linux
-    swww
-    (nerdfonts.override {
-      fonts = [
-        "Iosevka"
-        "IosevkaTerm"
-      ];
-    })
+    (nerdfonts.override { fonts = [ "Iosevka" ]; })
     discord
     whatsapp-for-linux
-    alsa-utils 
-    brightnessctl
     floorp
-    (pkgs.python312.withPackages (ppkgs: [
-      ppkgs.psutil
-    ]))
+    python312
+
     (writeShellScriptBin "toggle-sidebar" (builtins.readFile scripts/toggle-sidebar.sh))
     (writeShellScriptBin "wifi" (builtins.readFile scripts/wifi.sh))
-    (writeShellScriptBin "mem" (builtins.readFile scripts/mem.sh))
-    (writeShellScriptBin "cpu" (builtins.readFile scripts/cpu.sh))
-    networkmanager
+    (writeShellScriptBin "volume" (builtins.readFile scripts/volume.sh))
   ];
   services = {
     dunst = {
       enable = true;
       configFile = ./dunst/dunstrc;
     };
+    hyprpaper = {
+      enable = true;
+      settings = {
+        ipc = "on";
+        splash = true;
+        splash_offset = 2.0;
+        preload = [ "$HOME/Wallpapers/kitty.png" ];
+        wallpaper = [ ", $HOME/Wallpapers/kitty.png" ];
+      };
+    };
   };
   programs = {
     home-manager.enable = true; # important dont remove
+    hyprcursor-phinger.enable = true;
     ruff = {
       enable = true;
       settings = {};
@@ -130,7 +139,6 @@
     zsh = {
       enable = true;
       enableCompletion = true;
-      enableLsColors = true;
       autosuggestion.enable = true;
     };
     zoxide = {
@@ -373,7 +381,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    systemd.enable = true;
+    systemd.enable = false;
 
     settings = {
       monitor = ",preferred,auto,auto";
@@ -409,10 +417,11 @@
       exec-once = [
         "spotify"
         "eww open side-bar"
-        "swww-daemon & swww img ~/Wallpaper/kitty.png"
+        "systemctl --user enable --now hyprpaper.service"
       ];
       env = [
-        "XCURSOR_SIZE,36"	
+        "HYPRCURSOR_THEME, phinger"
+        "HYPRCURSOR_SIZE, 32"	
       ];
 
       "$mainMod" = "SUPER";	

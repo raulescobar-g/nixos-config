@@ -20,7 +20,41 @@
         "type": "github"
       }
     },
+    "hyprcursor-phinger": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1728827460,
+        "narHash": "sha256-sJTe+lI4kQrXEt2NhVZuJfUasWX28tZWYKebS4bLXB8=",
+        "owner": "jappie3",
+        "repo": "hyprcursor-phinger",
+        "rev": "1c8c9e968ccf23dffe7e6917fb5c2702934f1772",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jappie3",
+        "repo": "hyprcursor-phinger",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1728492678,
+        "narHash": "sha256-9UTxR8eukdg+XZeHgxW5hQA9fIKHsKCdOIUycTryeVw=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "5633bcff0c6162b9e4b5f1264264611e950c8ec7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1732014248,
         "narHash": "sha256-y/MEyuJ5oBWrWAic/14LaIr/u5E0wRVzyYsouYY3W6w=",
@@ -39,7 +73,8 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "hyprcursor-phinger": "hyprcursor-phinger",
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },

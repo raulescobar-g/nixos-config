@@ -93,6 +93,13 @@ in
     xwayland.enable = true;
     enable = true;
   };
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors.hyprland = {
+      binPath = "/run/current-system/sw/bin/Hyprland";
+      prettyName = "Hyprland";
+    };
+  };
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
   };

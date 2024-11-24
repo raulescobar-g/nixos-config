@@ -10,7 +10,7 @@ def main():
 
     brightness = int((brightness_output / total_output) * 100.0)
 
-    return f"{brightness} ☼".rjust(5)
+    return f"{brightness} br".rjust(5)
 
 if __name__ == "__main__":
     print(main())
