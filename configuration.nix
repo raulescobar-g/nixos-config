@@ -75,9 +75,6 @@ in
     packages = with pkgs; [
       wget
       git
-      google-chrome
-      kitty 
-      dunst
       libnotify
       libinput
     ];

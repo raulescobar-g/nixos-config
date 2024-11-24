@@ -9,7 +9,6 @@
   home.packages = with pkgs; [
     spotify
     spotify-cli-linux
-    kitty
     swww
     (nerdfonts.override {
       fonts = [
@@ -21,7 +20,7 @@
     whatsapp-for-linux
     alsa-utils 
     brightnessctl
-    ruff
+    floorp
     (pkgs.python312.withPackages (ppkgs: [
       ppkgs.psutil
     ]))
@@ -30,15 +29,19 @@
     (writeShellScriptBin "mem" (builtins.readFile scripts/mem.sh))
     (writeShellScriptBin "cpu" (builtins.readFile scripts/cpu.sh))
     networkmanager
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
   ];
+  services = {
+    dunst = {
+      enable = true;
+      configFile = ./dunst/dunstrc;
+    };
+  };
   programs = {
     home-manager.enable = true; # important dont remove
+    ruff = {
+      enable = true;
+      settings = {};
+    };
     eww = {
       enable = true;
       configDir = ./eww;

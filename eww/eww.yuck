@@ -52,7 +52,11 @@
   :runwhile artist-visible
   `spotifycli --artist`)
 
-(defvar song-img-path `scripts/music.sh img-path`)
+(defvar song-img-path-visible true)
+(defpoll song-img-path :interval "1m"
+  :initial ""
+  :runwhile song-img-path-visible
+  "scripts/music.sh img-path")
 
 (defwindow side-bar 
   :monitor 0

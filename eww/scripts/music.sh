@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-THUMBNAIL_DIR=$MUSIC_DIR/img
+THUMBNAIL_DIR=$MUSIC_DIR/img.jpg
 
 name="music"
 
