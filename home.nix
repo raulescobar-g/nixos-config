@@ -8,6 +8,7 @@
    
   
   home.packages = with pkgs; [
+    gcc
     cargo
     unzip
     hyprshot
@@ -129,6 +130,7 @@
     zsh = {
       enable = true;
       enableCompletion = true;
+      enableLsColors = true;
       autosuggestion.enable = true;
     };
     zoxide = {
@@ -156,10 +158,10 @@
     eza = {
       enable = true;
       enableZshIntegration = true;
-      #colors = "always";
+      colors = "always";
       extraOptions = [];
-      #git = true;
-      #icons = "always";
+      git = true;
+      icons = "always";
     };
     ripgrep = {
       enable = true;
@@ -353,7 +355,7 @@
     llt = "eza -1 --tree --git-ignore";
     cat = "bat";
     grep = "rg";
-    renix = "sudo -u raulescobar nixos-rebuild switch --flake ~/nixos-config#default";
+    renix = "sudo nixos-rebuild switch --flake ~/nixos-config#default";
   };
 
   fonts = {

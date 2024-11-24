@@ -10,7 +10,6 @@ in
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
-
     users = {
       "raulescobar" = import ./home.nix; 
     };
@@ -21,9 +20,8 @@ in
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
   networking.hostName = "nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -48,9 +46,7 @@ in
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware = {
     bluetooth = {
       enable = true;
@@ -95,7 +91,7 @@ in
 
   programs.hyprland = { 
     xwayland.enable = true;
-    enable = true; 
+    enable = true;
   };
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
@@ -116,7 +112,7 @@ in
     sddm = {
       enable = true;
       wayland.enable = true;
-      #autoLogin.relogin = true;
+      autoLogin.relogin = true;
       theme = "oxocarbon-sddm-theme";
     };
   };
