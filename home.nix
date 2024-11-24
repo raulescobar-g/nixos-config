@@ -8,6 +8,7 @@
   
   home.packages = with pkgs; [
     spotify
+    spotify-cli-linux
     kitty
     swww
     (nerdfonts.override {
@@ -28,7 +29,6 @@
     (writeShellScriptBin "wifi" (builtins.readFile scripts/wifi.sh))
     (writeShellScriptBin "mem" (builtins.readFile scripts/mem.sh))
     (writeShellScriptBin "cpu" (builtins.readFile scripts/cpu.sh))
-    (writeShellScriptBin "sp" (builtins.readFile scripts/vendor/sp.sh))
     networkmanager
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -449,5 +449,6 @@
   #
   home.sessionVariables = { 
     LOCK_DIR = "$HOME/.lockfiles";
+    MUSIC_DIR = "$HOME/.music";
   };
 }

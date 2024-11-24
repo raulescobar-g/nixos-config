@@ -16,7 +16,6 @@
   :runwhile vol-visible
   "scripts/volume.py")
 
-
 (defvar brightness-visible true)
 (defpoll brightness :interval "0.2s"
   :initial "    0 "
@@ -28,6 +27,32 @@
   :initial "    0 󱊢"
   :runwhile battery-visible
   "scripts/battery.py")
+
+(defvar song-icon-visible true)
+(defpoll song-icon :interval "1s"
+  :initial ""
+  :runwhile song-icon-visible
+  "scripts/music.sh icon")
+
+(defvar song-visible true)
+(defpoll song :interval "1s"
+  :initial ""
+  :runwhile song-visible
+  `spotifycli --song`)
+
+(defvar song-progress-visible true)
+(defpoll song-progress :interval "1s"
+  :initial ""
+  :runwhile song-progress-visible
+  `spotifycli --position`)
+
+(defvar artist-visible true)
+(defpoll artist :interval "1s"
+  :initial ""
+  :runwhile artist-visible
+  `spotifycli --artist`)
+
+(defvar song-img-path `scripts/music.sh img-path`)
 
 (defwindow side-bar 
   :monitor 0
@@ -46,12 +71,63 @@
     (box :valign "start" :orientation "v"
       (label :halign "end" :text battery)
       (label :halign "end" :text volume)
-      (label :halign "end" :text brightness))
+      (label :halign "end" :text brightness)
+    )
 
-    (box :valign "center" :orientation "v"
-      (label :text "mid"))
-    (box :valign "end" :orientation "v" 
-      (label :text date)
-      (label :text time))
-  ))
+    (eventbox 
+      :onhover `eww open spotify`
+      :onhoverlost `eww close spotify`
+      (box :valign "center" :orientation "v"
+        (box :class "music-box" :orientation "h" :halign "center"
+          (button :onclick `spotifycli --prev`      (label :text " "))
+          (button :onclick `spotifycli --playpause` (label :text song-icon))
+          (button :onclick `spotifycli --next`      (label :text " "))
+        )
+      )
+    )
+
+    (eventbox 
+      :onhover `eww open calendar` 
+      :onhoverlost `eww close calendar` 
+      (box :valign "end" :orientation "v" 
+        (label :text date)
+        (label :text time)
+      )
+    )
+  )
+)
+
+(defwindow calendar
+  :geometry (geometry 
+    :x "4"
+    :y "4"
+    :anchor "bottom right"
+  )
+  :stacking "overlay"
+  :monitor 0
+  (box
+    (box
+      (calendar "cal")
+    )
+  )
+)
+
+(defwindow spotify
+  :geometry (geometry
+    :x "4"
+    :y "0"
+    :anchor "center right"
+  )
+  :stacking "overlay"
+  :monitor 0
+  (box :orientation "v" :valign "center"
+    (image :path song-img-path :image-height 80 :preserve-aspect-ratio true)
+    (box :orientation "v" :valign "center"
+      (label :class "artist" :text artist)
+      (label :class "song" :text song)
+      (label :class "song-progress" :text song-progress)
+    )
+  )
+)
+
 
