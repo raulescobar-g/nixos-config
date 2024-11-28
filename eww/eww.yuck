@@ -47,7 +47,7 @@
       (label :halign "end" :text "${EWW_BATTERY.BAT1.capacity} bt")
       (label :halign "end" :text "${volume} vo")
       (label :halign "end" :text brightness)
-      (label :text "")
+      (label :text "       ")
       (label :halign "end" :text "${round(EWW_DISK["/"].used_perc, 0)} dsk")
       (label :halign "end" :text "${round(EWW_RAM.used_mem_perc, 0)} mem")
       (label :halign "end" :text "${round(EWW_CPU.avg, 0)} cpu")

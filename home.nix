@@ -13,6 +13,7 @@
   home.packages = with pkgs; [
     gcc
     cargo
+    node2nix
 
     unzip
     alsa-utils
@@ -26,7 +27,6 @@
     (nerdfonts.override { fonts = [ "Iosevka" ]; })
     discord
     whatsapp-for-linux
-    floorp
     python312
 
     (writeShellScriptBin "toggle-sidebar" (builtins.readFile scripts/toggle-sidebar.sh))
@@ -51,6 +51,20 @@
   };
   programs = {
     home-manager.enable = true; # important dont remove
+    floorp = {
+      enable = true;
+      profiles = {
+        raul = {
+          isDefault = true;
+        };
+      }; 
+    };
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+      config = {};
+    };
     hyprcursor-phinger.enable = true;
     ruff = {
       enable = true;
@@ -381,7 +395,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    systemd.enable = false;
+    systemd.enable = true;
 
     settings = {
       monitor = ",preferred,auto,auto";
