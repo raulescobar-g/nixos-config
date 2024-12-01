@@ -11,15 +11,17 @@
    
   
   home.packages = with pkgs; [
+    inputs.zen-browser.packages."${system}".default
+
     gcc
     cargo
-    node2nix
 
     unzip
     alsa-utils
     brightnessctl
     networkmanager 
-
+    
+    wl-clipboard
     hyprshot
     hyprcursor
     spotify
@@ -48,17 +50,13 @@
         wallpaper = [ ", $HOME/Wallpapers/kitty.png" ];
       };
     };
+    cliphist = {
+      enable = true;
+      allowImages = true;
+    };
   };
   programs = {
-    home-manager.enable = true; # important dont remove
-    floorp = {
-      enable = true;
-      profiles = {
-        raul = {
-          isDefault = true;
-        };
-      }; 
-    };
+    home-manager.enable = true; # important dont remove 
     direnv = {
       enable = true;
       enableZshIntegration = true;
@@ -432,6 +430,8 @@
         "spotify"
         "eww open side-bar"
         "systemctl --user enable --now hyprpaper.service"
+        "wl-paste --type text --watch cliphist store" # Stores only text data
+        "wl-paste --type image --watch cliphist store" # Stores only image data
       ];
       env = [
         "HYPRCURSOR_THEME, phinger"
@@ -442,6 +442,7 @@
       bind = [
         "$mainMod, Q, killactive"	
         "$mainMod, S, exec, wofi --show=drun -i -I" 
+        "$mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
         "$mainMod, H, workspace, -1"
         "$mainMod, L, workspace, +1"
         "$mainMod, B, exec, toggle-sidebar"
@@ -452,7 +453,11 @@
     };
   };
 
-  home.file = { };
+  home.file = { 
+    ".config/nvim" = {
+      source = ./nvim; 
+    };
+  };
   
   home.sessionVariables = { 
     LOCK_DIR = "$HOME/.lockfiles";

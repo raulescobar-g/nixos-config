@@ -11,6 +11,7 @@ description = "Nixos config flake";
     };
 
     hyprcursor-phinger.url = "github:jappie3/hyprcursor-phinger";
+    zen-browser.url = "github:fufexan/zen-browser-flake";
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
