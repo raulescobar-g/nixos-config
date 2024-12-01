@@ -165,12 +165,7 @@
       };
       themes = {
         oxocarbon = {
-          src = pkgs.fetchFromGitHub {
-            owner = "raulescobar-g";
-            repo = "oxocarbon-bat-theme"; # Bat uses sublime syntax for its themes
-            rev = "124cae2a14eb33c1430e0d3f5742fbd7fd1691ea";
-            sha256 = "sha256-e966VDGfPin3r2Mc3avt5mVZaO+HCqSfyNdLGoAWito=";
-          };
+          src = ./bat; 
           file = "oxocarbon-dark.tmTheme";
         };
       };
