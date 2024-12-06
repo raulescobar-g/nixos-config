@@ -1,0 +1,64 @@
+$foreground: #f4f4f4;
+$background: #262626;
+  
+$accent: #0f62fe;
+
+$error: #fa4d56;
+$success: #42be65;
+$warning: #f1c21b;
+$info: #4589ff;
+
+
+* {
+  all: unset;
+  font-family: 'Iosevka Nerd Font', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background-color: $background;
+  color: $foreground;
+  font-size: 12px;
+}
+
+.side-bar {
+  
+}
+
+.music-box {
+  
+}
+
+.calendar {
+  border-radius: 4px;
+  border: 1px white solid;
+}
+
+calendar.button {
+  color: #393939;
+}
+calendar.header {
+  color: #ff7eb6;
+  font-weight: bold;
+}
+calendar:indeterminate {
+  color: #525252;
+}
+calendar:selected {
+  color: #3ddbd9;
+  border-radius: 2px;
+}
+
+.spotify {
+  background-color: $background;
+  padding: 8px;
+  border-radius: 4px;
+}
+.song {
+  padding: 4px;
+  font-size: 16px
+}
+.artist {
+  padding: 4px;
+  font-size: 14px;
+}
+.song-progress {
+  padding: 4px;
+  font-size: 10px;
+}

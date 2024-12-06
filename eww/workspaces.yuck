@@ -1,0 +1,9 @@
+(deflisten current-workspace 
+  :initial `1` 
+  `tail -F $EVENT_DIR/workspaces`
+)
+(defwidget workspaces []
+  (box :valign "start" :orientation "v"
+    (label :halign "end" :text current-workspace)
+  )
+)

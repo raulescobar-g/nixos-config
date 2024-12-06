@@ -93,6 +93,15 @@ in
     xwayland.enable = true;
     enable = true;
   };
+
+  programs._1password = {
+    enable = true;
+  };
+
+  programs._1password-gui = {
+    enable = true;
+    polkitPolicyOwners = ["raulescobar"];
+  };
   
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
@@ -107,7 +116,7 @@ in
   
   services.displayManager = {
     autoLogin = {
-      enable = true;
+      enable = false;
       user = "raulescobar";
     };
     sddm = {
@@ -116,6 +125,10 @@ in
       autoLogin.relogin = true;
       theme = "oxocarbon-sddm-theme";
     };
+  };
+
+  services.fprintd = {
+    enable = true;
   };
 
   systemd.services."getty@tty1".enable = false;

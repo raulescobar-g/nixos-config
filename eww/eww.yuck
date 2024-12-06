@@ -1,3 +1,5 @@
+(include "./workspaces.yuck")
+
 (defpoll volume :interval "1m"
   :initial ""
   :runwhile true 
@@ -32,10 +34,10 @@
 (defwindow side-bar 
   :monitor 0
   :geometry (geometry 
-    :x "4px"
+    :x "0px"
     :y "0px"
-    :width "50px"
-    :height "990px"
+    :width "30px"
+    :height "1000px"
     :anchor "right center")
   :stacking "fg"
   :exclusive true 
@@ -43,6 +45,7 @@
   :namespace "side-bar"
 
   (box :orientation "v" 
+    (workspaces)
     (box :valign "start" :orientation "v"
       (label :halign "end" :text "${EWW_BATTERY.BAT1.capacity} bt")
       (label :halign "end" :text "${volume} vo")

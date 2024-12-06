@@ -13,8 +13,8 @@
   home.packages = with pkgs; [
     inputs.zen-browser.packages."${system}".default
 
-    gcc
-    cargo
+    #gcc
+    #cargo
 
     unzip
     alsa-utils
@@ -28,8 +28,9 @@
     spotify-cli-linux
     (nerdfonts.override { fonts = [ "Iosevka" ]; })
     discord
+    dbeaver-bin
     whatsapp-for-linux
-    python312
+    python312 #remove after replacing eww/brightness.py
 
     (writeShellScriptBin "toggle-sidebar" (builtins.readFile scripts/toggle-sidebar.sh))
     (writeShellScriptBin "wifi" (builtins.readFile scripts/wifi.sh))
@@ -54,9 +55,15 @@
       enable = true;
       allowImages = true;
     };
+    spotifyd = {
+      enable = true;
+    };
   };
   programs = {
-    home-manager.enable = true; # important dont remove 
+    home-manager.enable = true; # important dont remove  
+    spotify-player = {
+      enable = true;
+    };
     direnv = {
       enable = true;
       enableZshIntegration = true;
@@ -456,7 +463,7 @@
   
   home.sessionVariables = { 
     LOCK_DIR = "$HOME/.lockfiles";
-    MUSIC_DIR = "$HOME/.music";
+    EVENTS_DIR = "$HOME/.events";
     HYPRSHOT_DIR = "$HOME/Screenshots";
   };
 }
