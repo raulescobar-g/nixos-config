@@ -4,7 +4,7 @@ description = "Nixos config flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -12,6 +12,7 @@ description = "Nixos config flake";
 
     hyprcursor-phinger.url = "github:jappie3/hyprcursor-phinger";
     zen-browser.url = "github:fufexan/zen-browser-flake";
+    ghostty.url = "github:ghostty-org/ghostty";
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {

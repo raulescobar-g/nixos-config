@@ -12,7 +12,7 @@
   
   home.packages = with pkgs; [
     inputs.zen-browser.packages."${system}".default
-
+    inputs.ghostty.packages."${system}".default
     #gcc
     #cargo
 
@@ -28,9 +28,10 @@
     spotify-cli-linux
     (nerdfonts.override { fonts = [ "Iosevka" ]; })
     discord
-    dbeaver-bin
+    beekeeper-studio
     whatsapp-for-linux
     python312 #remove after replacing eww/brightness.py
+    postgresql_17
 
     (writeShellScriptBin "toggle-sidebar" (builtins.readFile scripts/toggle-sidebar.sh))
     (writeShellScriptBin "wifi" (builtins.readFile scripts/wifi.sh))
@@ -61,6 +62,11 @@
   };
   programs = {
     home-manager.enable = true; # important dont remove  
+    atuin = {
+      enable = true;
+      daemon.enable = true;
+      enableZshIntegration = true;
+    };
     spotify-player = {
       enable = true;
     };
@@ -194,9 +200,9 @@
       settings = {
       	format = " $git_branch\n $character";
 	character = {
-          success_symbol = "  [󰴈](bold red)  ";  
-          error_symbol = "  [󰴈](bold red)  ";
-          vimcmd_symbol = "  [󰴈](bold red)  ";
+          success_symbol = "  [󰴈](bold #ff7eb6)  ";  
+          error_symbol = "  [󰴈](bold #ff7eb6)  ";
+          vimcmd_symbol = "  [󰴈](bold #ff7eb6)  ";
         };
         cmd_duration = {
           min_time = 10000;
@@ -270,105 +276,6 @@
       enable = true;
       enableZshIntegration = true;
     };
-    zellij = {
-      enable = true;
-      enableZshIntegration = true;
-      settings = {
-        default_shell = "zsh";
-        simplified_ui = true;
-        pane_frames = false;
-        default_layout = "compact";
-        ui = {
-          pane_frames = {
-            rounded_corners = true;
-            hide_session_name = true;
-          };
-        };
-        theme = "oxocarbon";
-        themes = {
-          oxocarbon = {
-            fg = "#262626";
-            bg = "#262626";
-            black = "#161616"; #bg fullbar
-            red = "#161616";
-            green = "#ff7eb6";
-            yellow = "#161616";
-            blue = "#161616";
-            magenta = "#161616";
-            cyan = "#161616";
-            white = "#ff7eb6";
-            orange = "#161616";
-          };
-        };
-      };
-    };
-    kitty = {
-      enable = true;
-      shellIntegration.enableZshIntegration = true;
-      darwinLaunchOptions = [
-        "-o allow_remote_control=yes" 
-      ];
-      font = {
-        size = 14;
-        name = "Iosevka Nerd Font";
-        package = (pkgs.nerdfonts.override {
-          fonts = [
-            "Iosevka"
-          ];
-        });
-      };
-      environment = { "KITTY_ENABLE_WAYLAND"="1"; };
-      keybindings = {
-        "ctrl+c" = "copy_or_interrupt";
-      };
-      settings = {
-        allow_remote_control = true;
-        macos_traditional_fullscreen = true;
-        hide_window_decorations = "titlebar-only";
-        window_padding_width = 0;
-        dynamic_background_opacity = true;
-        scrollback_lines = 10000;
-        enable_audio_bell = false;
-        update_check_interval = 0;
-        background_opacity = "1.0";
-        background_blur = 0;
-
-	foreground="#dde1e6";
-        background="#161616";
-        selection_foreground="#f2f4f8";
-        selection_background="#525252";
-        cursor="#f2f4f8";
-        cursor_text_color="#393939";
-        url_color="#ee5396";
-        url_style="single";
-        active_border_color="#ee5396";
-        inactive_border_color="#ff7eb6";
-        bell_border_color="#ee5396";
-        wayland_titlebar_color="system";
-        macos_titlebar_color="system";
-        active_tab_foreground="#161616";
-        active_tab_background="#ee5396";
-        inactive_tab_foreground="#dde1e6";
-        inactive_tab_background="#393939";
-        tab_bar_background="#161616";
-        color0="#262626";
-        color8="#393939";
-        color1="#ff7eb6";
-        color9="#ff7eb6";
-        color2="#42be65";
-        color10="#42be65";
-        color3="#82cfff";
-        color11="#82cfff";
-        color4="#33b1ff";
-        color12="#33b1ff";
-        color5="#ee5396";
-        color13="#ee5396";
-        color6="#3ddbd9";
-        color14="#3ddbd9";
-        color7="#dde1e6";
-        color15="#ffffff";
-      };
-    };
   };
 
   home.shellAliases = {
@@ -395,7 +302,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    systemd.enable = true;
+    systemd.enable = false;
 
     settings = {
       monitor = ",preferred,auto,auto";
@@ -429,16 +336,12 @@
       };
       
       exec-once = [
-        "spotify"
         "eww open side-bar"
         "systemctl --user enable --now hyprpaper.service"
         "wl-paste --type text --watch cliphist store" # Stores only text data
         "wl-paste --type image --watch cliphist store" # Stores only image data
       ];
-      env = [
-        "HYPRCURSOR_THEME, phinger"
-        "HYPRCURSOR_SIZE, 32"	
-      ];
+      env = [];
 
       "$mainMod" = "SUPER";	
       bind = [
@@ -446,24 +349,84 @@
         "$mainMod, S, exec, wofi --show=drun -i -I" 
         "$mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
         "$mainMod, H, workspace, -1"
+        "$mainMod, H, exec, echo $(hyprctl activewindow | grep \"workspace: \" | cut -d' ' -f2) >> $EVENTS_DIR/workspaces"
+
         "$mainMod, L, workspace, +1"
+        "$mainMod, L, exec, echo $(hyprctl activewindow | grep \"workspace: \" | cut -d' ' -f2) >> $EVENTS_DIR/workspaces"
+
         "$mainMod, B, exec, toggle-sidebar"
         "$mainMod, PRINT, exec, hyprshot -m window -c"
         ", PRINT, exec, hyprshot -m output -c" 
         "SHIFT, PRINT, exec, hyprshot -m region" 
       ];
+      workspace = [
+        "r[1-10], persistent[true]"
+      ];
     };
   };
 
   home.file = { 
-    ".config/nvim" = {
+    "/home/raulescobar/.config/nvim" = {
       source = ./nvim; 
+    };
+    "/home/raulescobar/.config/uwsm/env" = {
+      text = ''
+        export LOCK_DIR="$HOME/.lockfiles"
+        export EVENTS_DIR="$HOME/.events"
+        export HYPRSHOT_DIR="$HOME/Screenshots"
+        export HYPRCURSOR_THEME="phinger"
+        export HYPRCURSOR_SIZE=32
+      '';
+    };
+    "/home/raulescobar/.config/ghostty/config" = {
+      text = ''
+        font-family = Iosevka
+        font-size = 16
+	theme = Oxocarbon
+        shell-integration = zsh
+        shell-integration-features = cursor, sudo, title
+        window-decoration = false
+      '';
+    };
+    "/home/raulescobar/.config/eza/theme.yml" = {
+      text = '' 
+        filekinds:
+          normal:
+            foreground: Blue
+          directory:
+            foreground: Blue
+          symlink:
+            foreground: Cyan
+          executable:
+            foreground: Magenta 
+        perms:
+          user_read:
+            foreground: Yellow
+            is_bold: true
+          user_write:
+            foreground: Red
+            is_bold: true
+          user_execute_file:
+            foreground: Magenta
+            is_bold: true
+          user_execute_other:
+            foreground: Magenta
+            is_bold: true
+          group_read:
+            foreground: Yellow
+          group_write:
+            foreground: Red
+          group_execute:
+            foreground: Magenta
+          other_read:
+            foreground: Yellow
+          other_write:
+            foreground: Red
+          other_execute:
+            foreground: Magenta
+      '';
     };
   };
   
-  home.sessionVariables = { 
-    LOCK_DIR = "$HOME/.lockfiles";
-    EVENTS_DIR = "$HOME/.events";
-    HYPRSHOT_DIR = "$HOME/Screenshots";
-  };
+  home.sessionVariables = {  };
 }

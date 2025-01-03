@@ -8,10 +8,17 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  
+
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+  boot.kernelParams =
+    [
+      "amdgpu.dcdebugmask=0x10"
+    ]
+    ++ lib.optionals (lib.versionOlder config.boot.kernelPackages.kernel.version "6.8") ["rtc_cmos.use_acpi_alarm=1"];
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/5b5b6339-51c2-4f6d-979b-437fd67234bb";

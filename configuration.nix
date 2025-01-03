@@ -18,8 +18,11 @@ in
   nix.settings.experimental-features = [ "nix-command" "flakes"];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
+
   networking.hostName = "nixos"; # Define your hostname.
   #networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -46,6 +49,7 @@ in
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+
   # Enable sound with pipewire.
   hardware = {
     bluetooth = {
@@ -56,9 +60,27 @@ in
       enable = false;
       support32Bit = true;
     };
+
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
+    sensor.iio = {
+      enable = true;
+    };
+
+    keyboard.qmk = {
+      enable = true;
+    };
+
+    amdgpu.initrd.enable = true;
   };
 
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;
+  };
+
   services.blueman.enable = true;
   services.pipewire = {
     enable = true;
@@ -92,6 +114,7 @@ in
   programs.hyprland = { 
     xwayland.enable = true;
     enable = true;
+    withUWSM = true;
   };
 
   programs._1password = {
@@ -109,30 +132,51 @@ in
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-  # Enable automatic login for the user.
-  services.xserver = {
-    enable = false;
-  };
-  
-  services.displayManager = {
-    autoLogin = {
+  services= {
+    xserver = {
       enable = false;
-      user = "raulescobar";
     };
-    sddm = {
+
+    power-profiles-daemon = {
       enable = true;
-      wayland.enable = true;
-      autoLogin.relogin = true;
-      theme = "oxocarbon-sddm-theme";
+    };
+
+    fwupd.enable = true;
+
+    displayManager = {
+      autoLogin = {
+        enable = false;
+        user = "raulescobar";
+      };
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+        autoLogin.relogin = false;
+        theme = "oxocarbon-sddm-theme";
+      };
+    };
+
+    fprintd = {
+      enable = true;
+    };
+
+    udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0bda", ATTR{idProduct}=="8156", ATTR{power/autosuspend}="20"
+      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="32ac", ATTRS{idProduct}=="0012", MODE="0660", GROUP="users", TAG+="uaccess", TAG+="udev-acl"
+    '';
+
+  };
+
+  systemd = {
+    services = { 
+      fprintd = {
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig.Type = "simple";
+      };
+      "getty@tty1".enable = false;
+      "autovt@tty1".enable = false;
     };
   };
-
-  services.fprintd = {
-    enable = true;
-  };
-
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
 
   nixpkgs.config.allowUnfree = true;
 

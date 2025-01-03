@@ -1,0 +1,7 @@
+(defwidget battery []
+  (box
+    (label 
+      :text {EWW_BATTERY.BAT1.capacity}
+    )
+  )
+)
